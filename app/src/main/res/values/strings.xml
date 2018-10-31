@@ -1,0 +1,10 @@
+<resources>
+    <string name="app_name">NewsApp</string>
+
+    <string name="turn_on_internet_message">Please turn on the internet connection</string>
+    <string name="progress_dialog_default_message">Please wait…</string>
+    <string name="connection_failure_message">Failed to connect</string>
+    <string name="title_newsitem_list">NewsItems</string>
+    <string name="title_newsitem_detail">NewsItem Detail</string>
+
+</resources>
