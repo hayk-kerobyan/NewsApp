@@ -7,7 +7,6 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.hk.newsapp.R;
-import com.hk.newsapp.interfaces.IListItemListener;
 import com.hk.newsapp.model.NewsItem;
 
 import java.util.List;

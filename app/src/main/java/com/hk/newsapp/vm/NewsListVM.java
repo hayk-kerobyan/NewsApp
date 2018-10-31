@@ -1,25 +1,24 @@
 package com.hk.newsapp.vm;
 
+import com.hk.newsapp.NewsRepo;
 import com.hk.newsapp.enums.RequestResult;
 import com.hk.newsapp.model.NewsItem;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.disposables.Disposable;
+import io.reactivex.observers.DisposableObserver;
+import io.reactivex.schedulers.Schedulers;
 
 public class NewsListVM extends ViewModel {
 
     public NewsListVM() {
         requestResult = new MutableLiveData<>();
         this.newsItems = new MutableLiveData<>();
-        List<NewsItem> newsItems = new ArrayList<>();
-        newsItems.add(new NewsItem(1L, "das"));
-        newsItems.add(new NewsItem(2L, "asd"));
-        newsItems.add(new NewsItem(3L, "dsa"));
-        newsItems.add(new NewsItem(4L, "sad"));
-        this.newsItems.setValue(newsItems);
+        loadNews();
     }
 
     public static final long DEFAULT_ITEM_ID = -1L;
@@ -27,11 +26,39 @@ public class NewsListVM extends ViewModel {
     private MutableLiveData<RequestResult> requestResult;
     private MutableLiveData<List<NewsItem>> newsItems;
     private long lastItemId = DEFAULT_ITEM_ID;
+    private Disposable newsDisposable;
+    private NewsRepo newsRepo = new NewsRepo();
+
+    public void loadNews() {
+        requestResult.setValue(RequestResult.IN_PROGRESS);
+        newsDisposable = newsRepo.getNews()
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribeWith(new DisposableObserver<List<NewsItem>>() {
+                    @Override
+                    public void onNext(List<NewsItem> newsItems) {
+                        NewsListVM.this.newsItems.setValue(newsItems);
+                        requestResult.setValue(RequestResult.SUCCESS);
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                        requestResult.setValue(RequestResult.FAILURE);
+                    }
+
+                    @Override
+                    public void onComplete() {
+
+                    }
+                });
+    }
 
 
     @Override
     protected void onCleared() {
         super.onCleared();
+        if (newsDisposable != null && !newsDisposable.isDisposed())
+            newsDisposable.dispose();
     }
 
     public MutableLiveData<List<NewsItem>> getNewsItems() {
@@ -42,7 +69,7 @@ public class NewsListVM extends ViewModel {
         return requestResult;
     }
 
-    public void onResultReceived(){
+    public void onResultReceived() {
         requestResult.setValue(RequestResult.NONE);
     }
 

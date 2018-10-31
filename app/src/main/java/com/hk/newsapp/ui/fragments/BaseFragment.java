@@ -31,11 +31,10 @@ public abstract class BaseFragment extends Fragment {
     }
 
     protected void showProgressDialog(String message) {
-        mBaseActivity.showProgressDialog();
+        mBaseActivity.showProgressDialog(message);
     }
 
     protected void dismissProgressDialog() {
         mBaseActivity.dismissProgressDialog();
-
     }
 }

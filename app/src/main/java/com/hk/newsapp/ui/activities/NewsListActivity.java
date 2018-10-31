@@ -77,7 +77,7 @@ public class NewsListActivity extends BaseActivity {
         if (requestResult != null) {
             switch (requestResult) {
                 case IN_PROGRESS:
-                    showProgressDialog();
+                    showProgressDialog(null);
                     disableUserActions();
                     break;
                 case SUCCESS:

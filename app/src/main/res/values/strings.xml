@@ -6,5 +6,6 @@
     <string name="connection_failure_message">Failed to connect</string>
     <string name="title_newsitem_list">NewsItems</string>
     <string name="title_newsitem_detail">NewsItem Detail</string>
+    <string name="wait_message">Please wait…</string>
 
 </resources>

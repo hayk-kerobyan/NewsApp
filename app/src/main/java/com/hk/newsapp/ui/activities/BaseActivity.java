@@ -5,12 +5,12 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
-import android.net.ConnectivityManager;
-import android.net.NetworkInfo;
+import android.content.pm.ActivityInfo;
 import android.os.Bundle;
 import android.view.WindowManager;
 import android.widget.Toast;
 
+import com.hk.newsapp.NetworkManger;
 import com.hk.newsapp.R;
 
 import androidx.annotation.Nullable;
@@ -23,16 +23,18 @@ public abstract class BaseActivity extends AppCompatActivity {
     protected BroadcastReceiver networkReceiver;
     public static final String CONNECTIVITY_CHANGE_ACTION = "android.net.conn.CONNECTIVITY_CHANGE";
     private Toast toast;
-    private ProgressDialog mProgressDialog;
+    private ProgressDialog progressDialog;
+
+    //TODO: Inject with Dagger
+    private NetworkManger networkManger = new NetworkManger(getApplication());
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
-       /* if (getResources().getBoolean(R.bool.landscape_only)) {
+        if (getResources().getBoolean(R.bool.landscape_only)) {
             setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
-        }*/
+        }
         super.onCreate(savedInstanceState);
-        mProgressDialog = new ProgressDialog(this);
-
+        setUpProgressBar();
     }
 
     @Override
@@ -64,16 +66,12 @@ public abstract class BaseActivity extends AppCompatActivity {
 
     protected void replaceFragment(int containerViewId, Fragment fragment, String fragmentTag,
                                    boolean addToBackStack) {
-        if (isConnected()) {
-            FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
-            fragmentTransaction.replace(containerViewId, fragment, fragmentTag);
-            if (addToBackStack) {
-                fragmentTransaction.addToBackStack(fragmentTag);
-            }
-            fragmentTransaction.commitAllowingStateLoss();
-        } else {
-            showNetworkConnectionFailure();
+        FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
+        fragmentTransaction.replace(containerViewId, fragment, fragmentTag);
+        if (addToBackStack) {
+            fragmentTransaction.addToBackStack(fragmentTag);
         }
+        fragmentTransaction.commitAllowingStateLoss();
     }
 
     private void registerNetworkReceiver() {
@@ -99,22 +97,12 @@ public abstract class BaseActivity extends AppCompatActivity {
         }
     }
 
+    public boolean isConnected() {
+        return networkManger.isConnected();
+    }
+
     protected abstract void onNetworkStateChanged(boolean isConnected);
 
-    public boolean isConnected() {
-        try {
-            ConnectivityManager cm
-                    = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
-            NetworkInfo netInfo = null;
-            if (cm != null) {
-                netInfo = cm.getActiveNetworkInfo();
-            }
-            return (netInfo != null && netInfo.isConnected());
-        } catch (NullPointerException e) {
-            e.printStackTrace();
-            return false;
-        }
-    }
 
     private void showNetworkConnectionFailure() {
         showToast(getString(R.string.turn_on_internet_message));
@@ -132,12 +120,19 @@ public abstract class BaseActivity extends AppCompatActivity {
         toast.show();
     }
 
-    public void showProgressDialog() {
-        mProgressDialog.show();
+    protected void setUpProgressBar() {
+        progressDialog = new ProgressDialog(this);
+        progressDialog.setCancelable(false);
+    }
+
+    public void showProgressDialog(String message) {
+        progressDialog.setMessage(message != null
+                ? message : getString(R.string.wait_message));
+        progressDialog.show();
     }
 
     public void dismissProgressDialog() {
-        mProgressDialog.dismiss();
+        progressDialog.dismiss();
     }
 
 
