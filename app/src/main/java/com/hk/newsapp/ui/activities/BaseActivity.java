@@ -13,20 +13,22 @@ import android.widget.Toast;
 import com.hk.newsapp.NetworkManger;
 import com.hk.newsapp.R;
 
+import javax.inject.Inject;
+
 import androidx.annotation.Nullable;
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
+import dagger.android.support.DaggerAppCompatActivity;
 
-public abstract class BaseActivity extends AppCompatActivity {
+public abstract class BaseActivity extends DaggerAppCompatActivity {
 
     protected BroadcastReceiver networkReceiver;
     public static final String CONNECTIVITY_CHANGE_ACTION = "android.net.conn.CONNECTIVITY_CHANGE";
     private Toast toast;
     private ProgressDialog progressDialog;
 
-    //TODO: Inject with Dagger
-    private NetworkManger networkManger = new NetworkManger(getApplication());
+    @Inject
+    NetworkManger networkManger;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {

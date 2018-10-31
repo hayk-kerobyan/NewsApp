@@ -1,24 +1,30 @@
 package com.hk.newsapp;
 
-import android.app.Application;
-
 import com.hk.newsapp.model.NewsItem;
 
 import java.util.List;
 
+import javax.inject.Inject;
+import javax.inject.Singleton;
+
 import io.reactivex.Observable;
 
+@Singleton
 public class NewsRepo {
 
-    private Application application;
-    private NetworkManger networkManger = new NetworkManger(application);
+    @Inject
+    public NewsRepo(NetworkManger networkManger) {
+        this.networkManger = networkManger;
+    }
+
+    private NetworkManger networkManger;
     private NewsLocalRepo localRepo = new NewsLocalRepo();
     private NewsRemoteRepo remoteRepo = new NewsRemoteRepo();
 
     public Observable<List<NewsItem>> getNews(){
-//        if(networkManger.isConnected()){
+        if(networkManger.isConnected()){
             return remoteRepo.getNews();
-//        }
-//        return localRepo.getNews();
+        }
+        return null;
     }
 }

@@ -1,12 +1,14 @@
 package com.hk.newsapp;
 
-import android.app.Application;
+import com.hk.newsapp.di.DaggerAppComponent;
 
-public class App extends Application {
+import dagger.android.AndroidInjector;
+import dagger.android.DaggerApplication;
+
+public class App extends DaggerApplication {
 
     @Override
-    public void onCreate() {
-        super.onCreate();
-
+    protected AndroidInjector<? extends DaggerApplication> applicationInjector() {
+        return DaggerAppComponent.builder().create(this);
     }
 }

@@ -15,7 +15,8 @@ import io.reactivex.schedulers.Schedulers;
 
 public class NewsListVM extends ViewModel {
 
-    public NewsListVM() {
+    public NewsListVM(NewsRepo newsRepo) {
+        this.newsRepo = newsRepo;
         requestResult = new MutableLiveData<>();
         this.newsItems = new MutableLiveData<>();
         loadNews();
@@ -27,7 +28,8 @@ public class NewsListVM extends ViewModel {
     private MutableLiveData<List<NewsItem>> newsItems;
     private long lastItemId = DEFAULT_ITEM_ID;
     private Disposable newsDisposable;
-    private NewsRepo newsRepo = new NewsRepo();
+    private NewsRepo newsRepo;
+
 
     public void loadNews() {
         requestResult.setValue(RequestResult.IN_PROGRESS);

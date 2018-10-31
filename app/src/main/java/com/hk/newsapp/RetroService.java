@@ -7,7 +7,7 @@ import java.util.List;
 import io.reactivex.Observable;
 import retrofit2.http.GET;
 
-public interface NewsRequest {
+public interface RetroService {
 
     //TODO: Change url
     @GET("news")

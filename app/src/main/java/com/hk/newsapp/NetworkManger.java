@@ -1,22 +1,27 @@
 package com.hk.newsapp;
 
-import android.app.Application;
 import android.content.Context;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 
+
+import javax.inject.Inject;
+import javax.inject.Singleton;
+
+@Singleton
 public class NetworkManger {
 
-    public NetworkManger(Application application) {
-        this.application = application;
+    @Inject
+    public NetworkManger(Context context) {
+        this.context = context;
     }
 
-    private Application application;
+    private Context context;
 
     public boolean isConnected() {
         try {
             ConnectivityManager cm
-                    = (ConnectivityManager) application.getSystemService(Context.CONNECTIVITY_SERVICE);
+                    = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
             NetworkInfo netInfo = null;
             if (cm != null) {
                 netInfo = cm.getActiveNetworkInfo();

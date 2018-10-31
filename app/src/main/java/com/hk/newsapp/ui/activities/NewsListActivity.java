@@ -4,14 +4,19 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 
+import com.hk.newsapp.NetworkManger;
+import com.hk.newsapp.NewsRepo;
 import com.hk.newsapp.R;
 import com.hk.newsapp.enums.RequestResult;
 import com.hk.newsapp.model.NewsItem;
 import com.hk.newsapp.ui.adapters.NewsAdapter;
 import com.hk.newsapp.ui.fragments.NewsDetailsFrag;
 import com.hk.newsapp.vm.NewsListVM;
+import com.hk.newsapp.vm.factory.NewsListFactory;
 
 import java.util.List;
+
+import javax.inject.Inject;
 
 import androidx.appcompat.widget.Toolbar;
 import androidx.lifecycle.Observer;
@@ -29,6 +34,9 @@ public class NewsListActivity extends BaseActivity {
 
     private boolean mTwoPane;
     private List<NewsItem> mNewsList;
+
+    @Inject
+    NewsListFactory newsListFactory;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -104,7 +112,7 @@ public class NewsListActivity extends BaseActivity {
     };
 
     private void setUpViewModel() {
-        newsListVM = ViewModelProviders.of(this).get(NewsListVM.class);
+        newsListVM = ViewModelProviders.of(this, newsListFactory).get(NewsListVM.class);
     }
 
     private void setupRecyclerView() {
