@@ -4,9 +4,9 @@ import android.content.Context;
 
 import com.hk.newsapp.ui.activities.BaseActivity;
 
-import androidx.fragment.app.Fragment;
+import dagger.android.support.DaggerFragment;
 
-public abstract class BaseFragment extends Fragment {
+public abstract class BaseFragment extends DaggerFragment {
 
 
     private BaseActivity mBaseActivity;

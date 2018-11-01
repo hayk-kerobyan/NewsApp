@@ -1,7 +1,7 @@
 package com.hk.newsapp.di;
 
 import com.google.gson.Gson;
-import com.hk.newsapp.RetroService;
+import com.hk.newsapp.network.RetroService;
 
 import javax.inject.Singleton;
 

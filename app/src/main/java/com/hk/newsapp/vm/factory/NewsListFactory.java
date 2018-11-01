@@ -1,14 +1,16 @@
 package com.hk.newsapp.vm.factory;
 
-import com.hk.newsapp.NewsRepo;
+import com.hk.newsapp.model.newsitem.NewsRepo;
 import com.hk.newsapp.vm.NewsListVM;
 
 import javax.inject.Inject;
+import javax.inject.Singleton;
 
 import androidx.annotation.NonNull;
 import androidx.lifecycle.ViewModel;
 import androidx.lifecycle.ViewModelProvider;
 
+@Singleton
 public class NewsListFactory extends ViewModelProvider.NewInstanceFactory {
 
     private NewsRepo newsRepo;

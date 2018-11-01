@@ -10,7 +10,7 @@ import android.os.Bundle;
 import android.view.WindowManager;
 import android.widget.Toast;
 
-import com.hk.newsapp.NetworkManger;
+import com.hk.newsapp.managers.NetworkManger;
 import com.hk.newsapp.R;
 
 import javax.inject.Inject;
@@ -32,9 +32,9 @@ public abstract class BaseActivity extends DaggerAppCompatActivity {
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
-        if (getResources().getBoolean(R.bool.landscape_only)) {
+        /*if (getResources().getBoolean(R.bool.landscape_only)) {
             setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
-        }
+        }*/
         super.onCreate(savedInstanceState);
         setUpProgressBar();
     }

@@ -1,6 +1,6 @@
-package com.hk.newsapp;
+package com.hk.newsapp.model.newsitem;
 
-import com.hk.newsapp.model.NewsItem;
+import com.hk.newsapp.managers.NetworkManger;
 
 import java.util.List;
 
@@ -21,10 +21,14 @@ public class NewsRepo {
     private NewsLocalRepo localRepo = new NewsLocalRepo();
     private NewsRemoteRepo remoteRepo = new NewsRemoteRepo();
 
-    public Observable<List<NewsItem>> getNews(){
-        if(networkManger.isConnected()){
+    public Observable<List<NewsItem>> getNews() {
+        if (networkManger.isConnected()) {
             return remoteRepo.getNews();
         }
         return null;
+    }
+
+    public Observable<NewsItem> getNewsById(long id) {
+        return localRepo.getNewsById(id);
     }
 }

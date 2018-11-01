@@ -1,4 +1,4 @@
-package com.hk.newsapp;
+package com.hk.newsapp.managers;
 
 import android.content.Context;
 import android.net.ConnectivityManager;

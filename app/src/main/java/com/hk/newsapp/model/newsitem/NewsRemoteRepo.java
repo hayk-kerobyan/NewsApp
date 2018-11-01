@@ -1,6 +1,4 @@
-package com.hk.newsapp;
-
-import com.hk.newsapp.model.NewsItem;
+package com.hk.newsapp.model.newsitem;
 
 import java.util.ArrayList;
 import java.util.List;

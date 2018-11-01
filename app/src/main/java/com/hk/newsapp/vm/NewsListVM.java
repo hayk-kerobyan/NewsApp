@@ -1,8 +1,8 @@
 package com.hk.newsapp.vm;
 
-import com.hk.newsapp.NewsRepo;
+import com.hk.newsapp.model.newsitem.NewsRepo;
 import com.hk.newsapp.enums.RequestResult;
-import com.hk.newsapp.model.NewsItem;
+import com.hk.newsapp.model.newsitem.NewsItem;
 
 import java.util.List;
 

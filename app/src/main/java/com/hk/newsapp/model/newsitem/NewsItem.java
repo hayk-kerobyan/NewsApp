@@ -1,4 +1,4 @@
-package com.hk.newsapp.model;
+package com.hk.newsapp.model.newsitem;
 
 public class NewsItem {
 

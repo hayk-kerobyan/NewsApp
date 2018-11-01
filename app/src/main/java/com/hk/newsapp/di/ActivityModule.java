@@ -3,6 +3,7 @@ package com.hk.newsapp.di;
 import com.hk.newsapp.ui.activities.BaseActivity;
 import com.hk.newsapp.ui.activities.NewsDetailsActivity;
 import com.hk.newsapp.ui.activities.NewsListActivity;
+import com.hk.newsapp.ui.fragments.NewsDetailsFrag;
 
 import dagger.Module;
 import dagger.android.ContributesAndroidInjector;
@@ -18,4 +19,9 @@ public abstract class ActivityModule {
 
     @ContributesAndroidInjector(modules = AppModule.class)
     abstract NewsDetailsActivity newsDetailsActivity();
+
+    @ContributesAndroidInjector
+    abstract NewsDetailsFrag newsDetailsFrag();
+
+
 }

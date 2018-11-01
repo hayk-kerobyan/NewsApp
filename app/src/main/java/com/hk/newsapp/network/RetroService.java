@@ -1,6 +1,6 @@
-package com.hk.newsapp;
+package com.hk.newsapp.network;
 
-import com.hk.newsapp.model.NewsItem;
+import com.hk.newsapp.model.newsitem.NewsItem;
 
 import java.util.List;
 
