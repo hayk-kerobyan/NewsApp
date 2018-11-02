@@ -2,53 +2,63 @@ package com.hk.newsapp.model.newsitem;
 
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
-import com.hk.newsapp.model.Gallery;
+import com.hk.newsapp.model.Photo;
 import com.hk.newsapp.model.Video;
 
 import java.util.List;
 
+import androidx.room.ColumnInfo;
+import androidx.room.Entity;
+import androidx.room.Ignore;
+import androidx.room.PrimaryKey;
+
+@Entity(tableName = "newsItem")
 public class NewsItem {
 
     public NewsItem() {}
 
-    public NewsItem(long id, String title) {
-        this.id = id;
-        this.title = title;
-    }
-
+    @PrimaryKey(autoGenerate = true)
     private long id;
 
     @SerializedName("category")
     @Expose
+    @ColumnInfo
     private String category;
 
     @SerializedName("title")
     @Expose
+    @ColumnInfo
     private String title;
 
     @SerializedName("body")
     @Expose
+    @ColumnInfo
     private String body;
 
     @SerializedName("shareUrl")
     @Expose
+    @ColumnInfo
     private String shareUrl;
 
     @SerializedName("coverPhotoUrl")
     @Expose
+    @ColumnInfo
     private String coverPhotoUrl;
 
     @SerializedName("date")
     @Expose
-    private Integer date;
+    @ColumnInfo
+    private long date;
 
     @SerializedName("gallery")
     @Expose
-    private List<Gallery> gallery = null;
+    @Ignore
+    private List<Photo> photos;
 
     @SerializedName("video")
     @Expose
-    private List<Video> video = null;
+    @Ignore
+    private List<Video> videos;
 
     public long getId() {
         return id;
@@ -98,27 +108,27 @@ public class NewsItem {
         this.coverPhotoUrl = coverPhotoUrl;
     }
 
-    public Integer getDate() {
+    public long getDate() {
         return date;
     }
 
-    public void setDate(Integer date) {
+    public void setDate(long date) {
         this.date = date;
     }
 
-    public List<Gallery> getGallery() {
-        return gallery;
+    public List<Photo> getPhotos() {
+        return photos;
     }
 
-    public void setGallery(List<Gallery> gallery) {
-        this.gallery = gallery;
+    public void setPhotos(List<Photo> photos) {
+        this.photos = photos;
     }
 
-    public List<Video> getVideo() {
-        return video;
+    public List<Video> getVideos() {
+        return videos;
     }
 
-    public void setVideo(List<Video> video) {
-        this.video = video;
+    public void setVideos(List<Video> videos) {
+        this.videos = videos;
     }
 }

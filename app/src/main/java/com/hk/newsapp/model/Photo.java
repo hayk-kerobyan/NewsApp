@@ -12,13 +12,13 @@ import androidx.room.PrimaryKey;
 
 import static androidx.room.ForeignKey.CASCADE;
 
-@Entity(tableName = "video",
+@Entity(tableName = "photo",
         foreignKeys = @ForeignKey(entity = NewsItem.class,
                 parentColumns = "id",
                 childColumns = "newsItemId",
                 onDelete = CASCADE),
         indices = {@Index("newsItemId")})
-public class Video {
+public class Photo {
 
     @PrimaryKey(autoGenerate = true)
     private long id;
@@ -36,13 +36,17 @@ public class Video {
     @ColumnInfo
     private String thumbnailUrl;
 
-    @SerializedName("youtubeId")
+    @SerializedName("contentUrl")
     @Expose
     @ColumnInfo
-    private String youtubeId;
+    private String contentUrl;
 
     public long getId() {
         return id;
+    }
+
+    public void setId(long id) {
+        this.id = id;
     }
 
     public long getNewsItemId() {
@@ -51,10 +55,6 @@ public class Video {
 
     public void setNewsItemId(long newsItemId) {
         this.newsItemId = newsItemId;
-    }
-
-    public void setId(long id) {
-        this.id = id;
     }
 
     public String getTitle() {
@@ -73,11 +73,11 @@ public class Video {
         this.thumbnailUrl = thumbnailUrl;
     }
 
-    public String getYoutubeId() {
-        return youtubeId;
+    public String getContentUrl() {
+        return contentUrl;
     }
 
-    public void setYoutubeId(String youtubeId) {
-        this.youtubeId = youtubeId;
+    public void setContentUrl(String contentUrl) {
+        this.contentUrl = contentUrl;
     }
 }

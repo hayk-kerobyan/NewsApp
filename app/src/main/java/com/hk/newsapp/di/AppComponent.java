@@ -10,7 +10,7 @@ import dagger.android.support.AndroidSupportInjectionModule;
 
 @Singleton
 @Component(modules = {AndroidSupportInjectionModule.class, AppModule.class,
-        NetworkModule.class, DestinationModule.class})
+        NetworkModule.class, DatabaseModule.class, DestinationModule.class})
 public interface AppComponent extends AndroidInjector<App> {
 
     @Component.Builder

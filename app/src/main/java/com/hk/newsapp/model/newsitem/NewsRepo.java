@@ -13,13 +13,14 @@ import io.reactivex.Observable;
 public class NewsRepo {
 
     @Inject
-    public NewsRepo(NetworkManger networkManger,  NewsRemoteRepo remoteRepo) {
+    public NewsRepo(NetworkManger networkManger, NewsRemoteRepo remoteRepo, NewsLocalRepo localRepo) {
         this.networkManger = networkManger;
         this.remoteRepo = remoteRepo;
+        this.localRepo = localRepo;
     }
 
     private NetworkManger networkManger;
-    private NewsLocalRepo localRepo = new NewsLocalRepo();
+    private NewsLocalRepo localRepo;
     private NewsRemoteRepo remoteRepo;
 
     public Observable<List<NewsItem>> getNews() {
