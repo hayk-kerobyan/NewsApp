@@ -55,7 +55,6 @@ public class NewsListVM extends ViewModel {
                 });
     }
 
-
     @Override
     protected void onCleared() {
         super.onCleared();

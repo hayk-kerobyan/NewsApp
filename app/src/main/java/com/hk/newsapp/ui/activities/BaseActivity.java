@@ -5,13 +5,12 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
-import android.content.pm.ActivityInfo;
 import android.os.Bundle;
 import android.view.WindowManager;
 import android.widget.Toast;
 
-import com.hk.newsapp.managers.NetworkManger;
 import com.hk.newsapp.R;
+import com.hk.newsapp.managers.NetworkManger;
 
 import javax.inject.Inject;
 
@@ -106,7 +105,7 @@ public abstract class BaseActivity extends DaggerAppCompatActivity {
     protected abstract void onNetworkStateChanged(boolean isConnected);
 
 
-    private void showNetworkConnectionFailure() {
+    public void showNetworkConnectionFailure() {
         showToast(getString(R.string.turn_on_internet_message));
     }
 

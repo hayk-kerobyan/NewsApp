@@ -1,19 +1,40 @@
 package com.hk.newsapp.model.newsitem;
 
-import java.util.ArrayList;
+import com.hk.newsapp.model.NewsResponse;
+import com.hk.newsapp.network.RetroService;
+
 import java.util.List;
-import java.util.concurrent.TimeUnit;
+
+import javax.inject.Inject;
+import javax.inject.Singleton;
 
 import io.reactivex.Observable;
+import io.reactivex.ObservableSource;
+import io.reactivex.functions.Function;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
+@Singleton
 public class NewsRemoteRepo {
 
-    public Observable<List<NewsItem>> getNews(){
-        List<NewsItem> newsItems = new ArrayList<>();
-        newsItems.add(new NewsItem(1L, "das"));
-        newsItems.add(new NewsItem(2L, "asd"));
-        newsItems.add(new NewsItem(3L, "dsa"));
-        newsItems.add(new NewsItem(4L, "sad"));
-        return Observable.just(newsItems).delay(2000, TimeUnit.MILLISECONDS);
+    @Inject
+    public NewsRemoteRepo(RetroService retroService) {
+        this.retroService = retroService;
     }
+
+    RetroService retroService;
+
+    public Observable<List<NewsItem>> getNews() {
+        return retroService.getNews().filter(NewsResponse::getSuccess)
+                .flatMap(newsResponse -> Observable.just(newsResponse.getData()));
+
+
+    }
+
+    /*    public Observable<List<NewsItem>> getNews() {
+        return retroService.getNews()
+                .filter(NewsResponse::getSuccess)
+                .flatMap(newsResponse -> Observable.just(newsResponse.getData()));
+    }*/
 }

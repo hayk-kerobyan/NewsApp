@@ -52,9 +52,6 @@ public class NewsListActivity extends BaseActivity {
         mNewsRV = findViewById(R.id.newsitem_list);
         setUpViewModel();
         subscribeObservers();
-        if (!mTwoPane && newsListVM.getLastItemId() != DEFAULT_ITEM_ID) {
-            openDetailsActivity(newsListVM.getLastItemId());
-        }
     }
 
     @Override

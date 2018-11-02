@@ -9,6 +9,7 @@ import dagger.Module;
 import dagger.Provides;
 import okhttp3.OkHttpClient;
 import retrofit2.Retrofit;
+import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory;
 import retrofit2.converter.gson.GsonConverterFactory;
 
 @Module
@@ -25,8 +26,9 @@ class NetworkModule {
     Retrofit providesRetrofit(OkHttpClient okHttpClient, GsonConverterFactory gsonFactory) {
         return new Retrofit.Builder()
                 .client(okHttpClient)
+                .baseUrl("http://develandoo.getsandbox.com/")
                 .addConverterFactory(gsonFactory)
-                .baseUrl("")
+                .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
                 .build();
     }
 

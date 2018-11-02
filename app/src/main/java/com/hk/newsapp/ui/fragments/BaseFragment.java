@@ -38,4 +38,8 @@ public abstract class BaseFragment extends DaggerFragment {
     protected void dismissProgressDialog() {
         mBaseActivity.dismissProgressDialog();
     }
+
+    private void showNetworkConnectionFailure() {
+        mBaseActivity.showNetworkConnectionFailure();
+    }
 }

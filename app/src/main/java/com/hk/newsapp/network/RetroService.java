@@ -1,15 +1,13 @@
 package com.hk.newsapp.network;
 
-import com.hk.newsapp.model.newsitem.NewsItem;
-
-import java.util.List;
+import com.hk.newsapp.model.NewsResponse;
 
 import io.reactivex.Observable;
 import retrofit2.http.GET;
 
 public interface RetroService {
 
-    //TODO: Change url
-    @GET("news")
-    Observable<List<NewsItem>> getNews();
+    @GET("feed")
+    Observable<NewsResponse> getNews();
+
 }

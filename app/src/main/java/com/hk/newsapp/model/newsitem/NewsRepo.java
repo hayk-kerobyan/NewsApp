@@ -13,19 +13,20 @@ import io.reactivex.Observable;
 public class NewsRepo {
 
     @Inject
-    public NewsRepo(NetworkManger networkManger) {
+    public NewsRepo(NetworkManger networkManger,  NewsRemoteRepo remoteRepo) {
         this.networkManger = networkManger;
+        this.remoteRepo = remoteRepo;
     }
 
     private NetworkManger networkManger;
     private NewsLocalRepo localRepo = new NewsLocalRepo();
-    private NewsRemoteRepo remoteRepo = new NewsRemoteRepo();
+    private NewsRemoteRepo remoteRepo;
 
     public Observable<List<NewsItem>> getNews() {
         if (networkManger.isConnected()) {
             return remoteRepo.getNews();
         }
-        return null;
+        return localRepo.getNews();
     }
 
     public Observable<NewsItem> getNewsById(long id) {
