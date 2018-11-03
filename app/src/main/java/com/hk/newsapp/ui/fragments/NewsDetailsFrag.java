@@ -4,12 +4,18 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.RequestOptions;
 import com.hk.newsapp.R;
 import com.hk.newsapp.model.NewsItem;
+import com.hk.newsapp.utils.TimeUtils;
 import com.hk.newsapp.vm.NewsDetailsVM;
 import com.hk.newsapp.vm.factory.NewsDetailsFactory;
+
+import java.util.Date;
 
 import javax.inject.Inject;
 
@@ -34,10 +40,12 @@ public class NewsDetailsFrag extends BaseFragment {
 
     @Inject
     NewsDetailsFactory newsDetailsFactory;
-
     private NewsDetailsVM newsDetailsVM;
 
-    private TextView textView;
+    private RequestOptions requestOptions = new RequestOptions().centerCrop();
+
+    private ImageView mainIV, photoIV, videoIV;
+    private TextView titleTV, categoryTV, dateTV, descTV;
 
     private NewsItem newsItem;
 
@@ -75,18 +83,55 @@ public class NewsDetailsFrag extends BaseFragment {
         }
     };
 
+    private View.OnClickListener onClickListener = v -> {
+        switch (v.getId()) {
+            case R.id.photo_iv_news_details_frag:
+
+                break;
+            case R.id.video_iv_news_details_frag:
+
+                break;
+        }
+    };
+
     private void initViews(View view) {
-        textView = view.findViewById(R.id.textView);
+        mainIV = view.findViewById(R.id.main_iv_news_details_frag);
+        photoIV = view.findViewById(R.id.photo_iv_news_details_frag);
+        videoIV = view.findViewById(R.id.video_iv_news_details_frag);
+        titleTV = view.findViewById(R.id.title_tv_news_details_frag);
+        categoryTV = view.findViewById(R.id.category_tv_news_details_frag);
+        dateTV = view.findViewById(R.id.date_tv_news_details_frag);
+        descTV = view.findViewById(R.id.desc_tv_news_details_frag);
     }
 
     private void setUpViewModel() {
+        assert getArguments() != null;
         newsDetailsVM = ViewModelProviders.of(this,
                 newsDetailsFactory.withId(getArguments().getLong(NEWS_ITEM_ID_KEY)))
                 .get(NewsDetailsVM.class);
     }
 
     private void updateUI() {
-        textView.setText(newsItem.getTitle());
+        if (getContext() != null) {
+            Glide.with(getContext()).load(newsItem.getCoverPhotoUrl())
+                    .apply(requestOptions).into(mainIV);
+            titleTV.setText(newsItem.getTitle());
+            categoryTV.setText(newsItem.getCategory());
+            dateTV.setText(TimeUtils.dateToString(new Date(newsItem.getDate())));
+            descTV.setText(newsItem.getBody());
+            setUpGalleryIcons();
+        }
+    }
+
+    private void setUpGalleryIcons() {
+        if (newsItem.getPhotos() != null && !newsItem.getPhotos().isEmpty()) {
+            photoIV.setVisibility(View.VISIBLE);
+            photoIV.setOnClickListener(onClickListener);
+        }
+        if (newsItem.getVideos() != null && !newsItem.getVideos().isEmpty()) {
+            videoIV.setVisibility(View.VISIBLE);
+            videoIV.setOnClickListener(onClickListener);
+        }
     }
 
     private void subscribeObservers() {
@@ -96,6 +141,4 @@ public class NewsDetailsFrag extends BaseFragment {
     private void unsubscribeObservers() {
         newsDetailsVM.getNewsItem().removeObserver(newsDetailsObserver);
     }
-
-
 }

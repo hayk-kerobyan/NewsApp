@@ -32,6 +32,7 @@ public class NewsRepo {
         if (networkManger.isConnected()) {
             return remoteRepo.getNews().doOnNext(newsItems -> {
                 localRepo.deleteAll();
+                NewsConverter.adaptObjects(newsItems);
                 List<Long> ids = localRepo.insertNewsItems(newsItems);
                 Pair<List<Photo>, List<Video>> components = NewsConverter.setIds(newsItems, ids);
                 localRepo.insertComponents(components);

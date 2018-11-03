@@ -41,7 +41,7 @@
 
     <TextView
         android:id="@+id/date_tv_news_item"
-        style="@style/TextAppearance.AppCompat.Body2"
+        style="@style/TextAppearance.AppCompat.Body1"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginEnd="16dp"
@@ -54,7 +54,7 @@
 
     <TextView
         android:id="@+id/category_tv_news_item"
-        style="@style/TextAppearance.AppCompat.Body1"
+        style="@style/TextAppearance.AppCompat.Body2"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="12dp"
