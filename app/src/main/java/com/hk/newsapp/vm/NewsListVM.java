@@ -35,6 +35,7 @@ public class NewsListVM extends ViewModel {
                 .subscribeWith(new DisposableObserver<List<NewsItem>>() {
                     @Override
                     public void onNext(List<NewsItem> newsItems) {
+                        disposables.dispose();
                         NewsListVM.this.newsItems.postValue(newsItems);
                         requestResult.postValue(RequestResult.SUCCESS);
                     }

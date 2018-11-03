@@ -11,6 +11,7 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
 import com.hk.newsapp.R;
 import com.hk.newsapp.model.NewsItem;
+import com.hk.newsapp.utils.ImageUtils;
 import com.hk.newsapp.utils.TimeUtils;
 import com.hk.newsapp.vm.NewsDetailsVM;
 import com.hk.newsapp.vm.factory.NewsDetailsFactory;
