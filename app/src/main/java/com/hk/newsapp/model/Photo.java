@@ -2,7 +2,6 @@ package com.hk.newsapp.model;
 
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
-import com.hk.newsapp.model.newsitem.NewsItem;
 
 import androidx.room.ColumnInfo;
 import androidx.room.Entity;
@@ -19,6 +18,9 @@ import static androidx.room.ForeignKey.CASCADE;
                 onDelete = CASCADE),
         indices = {@Index("newsItemId")})
 public class Photo {
+
+    public Photo() {
+    }
 
     @PrimaryKey(autoGenerate = true)
     private long id;

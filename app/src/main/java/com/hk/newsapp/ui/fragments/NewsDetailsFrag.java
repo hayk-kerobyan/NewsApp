@@ -7,7 +7,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.hk.newsapp.R;
-import com.hk.newsapp.model.newsitem.NewsItem;
+import com.hk.newsapp.model.NewsItem;
 import com.hk.newsapp.vm.NewsDetailsVM;
 import com.hk.newsapp.vm.factory.NewsDetailsFactory;
 

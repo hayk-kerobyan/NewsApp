@@ -2,7 +2,6 @@ package com.hk.newsapp.model;
 
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
-import com.hk.newsapp.model.newsitem.NewsItem;
 
 import java.util.List;
 

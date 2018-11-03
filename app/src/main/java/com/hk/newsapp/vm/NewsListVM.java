@@ -1,8 +1,10 @@
 package com.hk.newsapp.vm;
 
-import com.hk.newsapp.model.newsitem.NewsRepo;
+import android.util.Log;
+
+import com.hk.newsapp.repositories.NewsRepo;
 import com.hk.newsapp.enums.RequestResult;
-import com.hk.newsapp.model.newsitem.NewsItem;
+import com.hk.newsapp.model.NewsItem;
 
 import java.util.List;
 
@@ -29,23 +31,24 @@ public class NewsListVM extends ViewModel {
     private long lastItemId = DEFAULT_ITEM_ID;
     private Disposable newsDisposable;
     private NewsRepo newsRepo;
-
+public static final String TAG = "LOG_TAG";
 
     public void loadNews() {
         requestResult.setValue(RequestResult.IN_PROGRESS);
         newsDisposable = newsRepo.getNews()
                 .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
                 .subscribeWith(new DisposableObserver<List<NewsItem>>() {
                     @Override
                     public void onNext(List<NewsItem> newsItems) {
-                        NewsListVM.this.newsItems.setValue(newsItems);
-                        requestResult.setValue(RequestResult.SUCCESS);
+                        Log.d(TAG, "VM onNext: " +newsItems.size());
+                        NewsListVM.this.newsItems.postValue(newsItems);
+                        requestResult.postValue(RequestResult.SUCCESS);
                     }
 
                     @Override
                     public void onError(Throwable e) {
-                        requestResult.setValue(RequestResult.FAILURE);
+                        Log.d(TAG, "VM onError: ");
+                        requestResult.postValue(RequestResult.FAILURE);
                     }
 
                     @Override

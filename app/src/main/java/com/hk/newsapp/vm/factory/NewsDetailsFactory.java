@@ -1,6 +1,6 @@
 package com.hk.newsapp.vm.factory;
 
-import com.hk.newsapp.model.newsitem.NewsRepo;
+import com.hk.newsapp.repositories.NewsRepo;
 import com.hk.newsapp.vm.NewsDetailsVM;
 
 import javax.inject.Inject;

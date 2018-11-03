@@ -21,23 +21,4 @@ class DatabaseModule {
     AppDatabase providesDatabaseModule(Context context) {
         return Room.databaseBuilder(context, AppDatabase.class, "AppDB").build();
     }
-
-    @Singleton
-    @Provides
-    NewsDao providesNewsDao(AppDatabase appDatabase) {
-        return appDatabase.newsDao();
-    }
-
-    @Singleton
-    @Provides
-    PhotoDao providesPhotoDao(AppDatabase appDatabase) {
-        return appDatabase.photoDao();
-    }
-
-    @Singleton
-    @Provides
-    VideoDao providesVideoDao(AppDatabase appDatabase) {
-        return appDatabase.videoDao();
-    }
-
 }

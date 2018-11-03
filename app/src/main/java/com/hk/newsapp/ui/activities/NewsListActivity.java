@@ -6,7 +6,7 @@ import android.view.View;
 
 import com.hk.newsapp.R;
 import com.hk.newsapp.enums.RequestResult;
-import com.hk.newsapp.model.newsitem.NewsItem;
+import com.hk.newsapp.model.NewsItem;
 import com.hk.newsapp.ui.adapters.NewsAdapter;
 import com.hk.newsapp.ui.fragments.NewsDetailsFrag;
 import com.hk.newsapp.vm.NewsListVM;

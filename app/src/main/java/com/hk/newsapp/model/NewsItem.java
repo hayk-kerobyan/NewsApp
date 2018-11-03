@@ -1,4 +1,4 @@
-package com.hk.newsapp.model.newsitem;
+package com.hk.newsapp.model;
 
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;

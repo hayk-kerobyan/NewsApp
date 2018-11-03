@@ -1,13 +1,12 @@
 package com.hk.newsapp.vm;
 
-import com.hk.newsapp.model.newsitem.NewsItem;
-import com.hk.newsapp.model.newsitem.NewsRepo;
+import com.hk.newsapp.model.NewsItem;
+import com.hk.newsapp.repositories.NewsRepo;
 
 import javax.inject.Inject;
 
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
-import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.observers.DisposableObserver;
 import io.reactivex.schedulers.Schedulers;
@@ -33,13 +32,12 @@ public class NewsDetailsVM extends ViewModel {
     }
 
     private void loadNewsItem(long id) {
-        newsItemDisposable = newsRepo.getNewsById(id)
+        newsItemDisposable = newsRepo.getByIdWithComponents(id)
                 .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
                 .subscribeWith(new DisposableObserver<NewsItem>() {
                     @Override
                     public void onNext(NewsItem newsItem) {
-                        NewsDetailsVM.this.newsItem.setValue(newsItem);
+                        NewsDetailsVM.this.newsItem.postValue(newsItem);
                     }
 
                     @Override

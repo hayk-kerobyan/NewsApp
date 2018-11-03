@@ -3,7 +3,7 @@ package com.hk.newsapp.db;
 
 import com.hk.newsapp.model.Photo;
 import com.hk.newsapp.model.Video;
-import com.hk.newsapp.model.newsitem.NewsItem;
+import com.hk.newsapp.model.NewsItem;
 
 import androidx.room.Database;
 import androidx.room.RoomDatabase;
