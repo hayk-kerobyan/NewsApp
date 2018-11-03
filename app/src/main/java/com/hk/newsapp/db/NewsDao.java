@@ -1,13 +1,10 @@
 package com.hk.newsapp.db;
 
-import android.util.Log;
-
 import com.hk.newsapp.db.model.NewsWithComponents;
 import com.hk.newsapp.model.NewsItem;
 import com.hk.newsapp.model.Photo;
 import com.hk.newsapp.model.Video;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import androidx.core.util.Pair;
@@ -16,18 +13,19 @@ import androidx.room.Insert;
 import androidx.room.OnConflictStrategy;
 import androidx.room.Query;
 import androidx.room.Transaction;
-import io.reactivex.Completable;
+import androidx.room.Update;
 import io.reactivex.Observable;
-import io.reactivex.Single;
-import io.reactivex.functions.Consumer;
 
 @Dao
 public abstract class NewsDao {
 
     public static final String TAG = "LOG_TAG";
 
+    @Update
+    public abstract void updateNewsItem(NewsItem newsItem);
+
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    public abstract List<Long> insertNews(List<NewsItem> newsItem);
+    public abstract List<Long> insertNews(List<NewsItem> newsItems);
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     abstract void insertPhotos(List<Photo> photos);

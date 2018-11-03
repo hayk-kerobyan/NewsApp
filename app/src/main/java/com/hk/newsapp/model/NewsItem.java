@@ -2,8 +2,6 @@ package com.hk.newsapp.model;
 
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
-import com.hk.newsapp.model.Photo;
-import com.hk.newsapp.model.Video;
 
 import java.util.List;
 
@@ -19,6 +17,9 @@ public class NewsItem {
 
     @PrimaryKey(autoGenerate = true)
     private long id;
+
+    @ColumnInfo
+    private boolean read;
 
     @SerializedName("category")
     @Expose
@@ -66,6 +67,14 @@ public class NewsItem {
 
     public void setId(long id) {
         this.id = id;
+    }
+
+    public boolean isRead() {
+        return read;
+    }
+
+    public void setRead(boolean read) {
+        this.read = read;
     }
 
     public String getCategory() {

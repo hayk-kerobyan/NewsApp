@@ -16,6 +16,7 @@ import java.util.Date;
 import java.util.List;
 
 import androidx.annotation.NonNull;
+import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
 public class NewsAdapter extends RecyclerView.Adapter<NewsAdapter.NewsVH> {
@@ -72,7 +73,9 @@ public class NewsAdapter extends RecyclerView.Adapter<NewsAdapter.NewsVH> {
         }
 
         public void setData(NewsItem newsItem) {
-            itemView.setTag(newsList.get(getAdapterPosition()).getId());
+            itemView.setTag(getAdapterPosition());
+            itemView.setBackgroundColor(ContextCompat.getColor(itemView.getContext(),
+                    newsItem.isRead()?R.color.readNewsItemBG:R.color.unreadNewsItemBG));
             titleTV.setText(newsItem.getTitle());
             categoryTV.setText(newsItem.getCategory());
             dateTV.setText(TimeUtils.dateToString(new Date(newsItem.getDate())));

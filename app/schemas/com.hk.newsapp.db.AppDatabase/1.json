@@ -2,15 +2,21 @@
   "formatVersion": 1,
   "database": {
     "version": 1,
-    "identityHash": "0ce65b636f9bd6a931167d287725d779",
+    "identityHash": "065b74105702336f63acfb687790e5a2",
     "entities": [
       {
         "tableName": "newsItem",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `category` TEXT, `title` TEXT, `body` TEXT, `shareUrl` TEXT, `coverPhotoUrl` TEXT, `date` INTEGER NOT NULL)",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `read` INTEGER NOT NULL, `category` TEXT, `title` TEXT, `body` TEXT, `shareUrl` TEXT, `coverPhotoUrl` TEXT, `date` INTEGER NOT NULL)",
         "fields": [
           {
             "fieldPath": "id",
             "columnName": "id",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "read",
+            "columnName": "read",
             "affinity": "INTEGER",
             "notNull": true
           },
@@ -194,7 +200,7 @@
     "views": [],
     "setupQueries": [
       "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
-      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, \"0ce65b636f9bd6a931167d287725d779\")"
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, \"065b74105702336f63acfb687790e5a2\")"
     ]
   }
 }

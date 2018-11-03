@@ -27,11 +27,13 @@ import static com.hk.newsapp.vm.NewsListVM.DEFAULT_ITEM_ID;
 
 public class NewsListActivity extends BaseActivity {
 
-    private RecyclerView mNewsRV;
     private NewsListVM newsListVM;
 
-    private boolean mTwoPane;
+    private RecyclerView mNewsRV;
+    private NewsAdapter adapter;
+
     private List<NewsItem> mNewsList;
+    private boolean mTwoPane;
 
     @Inject
     NewsListFactory newsListFactory;
@@ -60,7 +62,14 @@ public class NewsListActivity extends BaseActivity {
     }
 
     private final View.OnClickListener mOnClickListener = view -> {
-        long newsId = (long) view.getTag();
+        int position = (int) view.getTag();
+        NewsItem newsItem = mNewsList.get(position);
+        if (!newsItem.isRead()) {
+            newsItem.setRead(true);
+            newsListVM.updateNewsItem(newsItem);
+            adapter.notifyItemChanged(position);
+        }
+        long newsId = newsItem.getId();
         newsListVM.setLastItemId(newsId);
         if (mTwoPane) {
             replaceFragment(R.id.newsitem_detail_container, NewsDetailsFrag.newInstance(newsId),
@@ -69,12 +78,6 @@ public class NewsListActivity extends BaseActivity {
             openDetailsActivity(newsId);
         }
     };
-
-    private void openDetailsActivity(long newsId) {
-        Intent intent = new Intent(this, NewsDetailsActivity.class);
-        intent.putExtra(NEWS_ITEM_ID_KEY, newsId);
-        startActivity(intent);
-    }
 
     private Observer<RequestResult> requestResultObserver = requestResult -> {
         if (requestResult != null) {
@@ -111,7 +114,7 @@ public class NewsListActivity extends BaseActivity {
     }
 
     private void setupRecyclerView() {
-        NewsAdapter adapter = new NewsAdapter(mNewsList, mOnClickListener);
+        adapter = new NewsAdapter(mNewsList, mOnClickListener);
         mNewsRV.setAdapter(adapter);
     }
 
@@ -136,5 +139,11 @@ public class NewsListActivity extends BaseActivity {
     private void unsubscribeObservers() {
         newsListVM.getRequestResult().removeObserver(requestResultObserver);
         newsListVM.getNewsItems().removeObserver(newsObserver);
+    }
+
+    private void openDetailsActivity(long newsId) {
+        Intent intent = new Intent(this, NewsDetailsActivity.class);
+        intent.putExtra(NEWS_ITEM_ID_KEY, newsId);
+        startActivity(intent);
     }
 }

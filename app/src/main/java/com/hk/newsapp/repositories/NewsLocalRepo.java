@@ -52,4 +52,8 @@ public class NewsLocalRepo {
     public void deleteAll() {
         appDatabase.newsDao().deleteAll();
     }
+
+    public void updateNewsItem(NewsItem newsItem) {
+        appDatabase.newsDao().updateNewsItem(newsItem);
+    }
 }

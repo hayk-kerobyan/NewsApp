@@ -44,4 +44,8 @@ public class NewsRepo {
     public Observable<NewsItem> getByIdWithComponents(long id) {
         return localRepo.getByIdWithComponents(id);
     }
+
+    public void updateNewsItem(NewsItem newsItem){
+        localRepo.updateNewsItem(newsItem);
+    }
 }

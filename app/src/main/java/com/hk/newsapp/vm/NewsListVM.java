@@ -8,7 +8,8 @@ import java.util.List;
 
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
-import io.reactivex.disposables.Disposable;
+import io.reactivex.Observable;
+import io.reactivex.disposables.CompositeDisposable;
 import io.reactivex.observers.DisposableObserver;
 import io.reactivex.schedulers.Schedulers;
 
@@ -16,22 +17,20 @@ public class NewsListVM extends ViewModel {
 
     public NewsListVM(NewsRepo newsRepo) {
         this.newsRepo = newsRepo;
-        requestResult = new MutableLiveData<>();
-        this.newsItems = new MutableLiveData<>();
         loadNews();
     }
 
     public static final long DEFAULT_ITEM_ID = -1L;
 
-    private MutableLiveData<RequestResult> requestResult;
-    private MutableLiveData<List<NewsItem>> newsItems;
+    private CompositeDisposable disposables = new CompositeDisposable();
+    private MutableLiveData<RequestResult> requestResult = new MutableLiveData<>();
+    private MutableLiveData<List<NewsItem>> newsItems = new MutableLiveData<>();
     private long lastItemId = DEFAULT_ITEM_ID;
-    private Disposable newsDisposable;
     private NewsRepo newsRepo;
 
     public void loadNews() {
         requestResult.setValue(RequestResult.IN_PROGRESS);
-        newsDisposable = newsRepo.getNews()
+        disposables.add(newsRepo.getNews()
                 .subscribeOn(Schedulers.io())
                 .subscribeWith(new DisposableObserver<List<NewsItem>>() {
                     @Override
@@ -49,14 +48,35 @@ public class NewsListVM extends ViewModel {
                     public void onComplete() {
 
                     }
-                });
+                }));
     }
 
     @Override
     protected void onCleared() {
         super.onCleared();
-        if (newsDisposable != null && !newsDisposable.isDisposed())
-            newsDisposable.dispose();
+        if (!disposables.isDisposed())
+            disposables.dispose();
+    }
+
+    public void updateNewsItem(NewsItem newsItem) {
+        disposables.add(Observable.just(newsItem)
+                .subscribeOn(Schedulers.io())
+                .subscribeWith(new DisposableObserver<NewsItem>() {
+                    @Override
+                    public void onNext(NewsItem newsItem) {
+                        newsRepo.updateNewsItem(newsItem);
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+
+                    }
+
+                    @Override
+                    public void onComplete() {
+
+                    }
+                }));
     }
 
     public MutableLiveData<List<NewsItem>> getNewsItems() {
