@@ -1,23 +1,18 @@
 package com.hk.newsapp.repositories;
 
-import com.hk.newsapp.Utils.NewsConverter;
+import com.hk.newsapp.db.model.NewsConverter;
 import com.hk.newsapp.db.AppDatabase;
-import com.hk.newsapp.db.model.NewsWithComponents;
 import com.hk.newsapp.model.NewsItem;
 import com.hk.newsapp.model.Photo;
 import com.hk.newsapp.model.Video;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import javax.inject.Inject;
 import javax.inject.Singleton;
 
 import androidx.core.util.Pair;
-import io.reactivex.Completable;
-import io.reactivex.Maybe;
 import io.reactivex.Observable;
-import io.reactivex.Single;
 
 @Singleton
 public class NewsLocalRepo {

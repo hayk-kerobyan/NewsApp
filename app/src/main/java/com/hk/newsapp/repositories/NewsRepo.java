@@ -1,6 +1,6 @@
 package com.hk.newsapp.repositories;
 
-import com.hk.newsapp.Utils.NewsConverter;
+import com.hk.newsapp.db.model.NewsConverter;
 import com.hk.newsapp.managers.NetworkManger;
 import com.hk.newsapp.model.NewsItem;
 import com.hk.newsapp.model.Photo;
@@ -24,7 +24,6 @@ public class NewsRepo {
         this.localRepo = localRepo;
     }
 
-    public static final String TAG = "LOG_TAG";
     private NetworkManger networkManger;
     private NewsLocalRepo localRepo;
     private NewsRemoteRepo remoteRepo;

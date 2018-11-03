@@ -6,9 +6,13 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.RequestOptions;
 import com.hk.newsapp.R;
 import com.hk.newsapp.model.NewsItem;
+import com.hk.newsapp.utils.TimeUtils;
 
+import java.util.Date;
 import java.util.List;
 
 import androidx.annotation.NonNull;
@@ -17,7 +21,7 @@ import androidx.recyclerview.widget.RecyclerView;
 public class NewsAdapter extends RecyclerView.Adapter<NewsAdapter.NewsVH> {
 
     private List<NewsItem> newsList;
-//    private RequestOptions requestOptions = new RequestOptions().centerCrop();
+    private RequestOptions requestOptions = new RequestOptions().centerCrop();
     private View.OnClickListener onClickListener;
 
     public NewsAdapter(List<NewsItem> newsList, View.OnClickListener onClickListener) {
@@ -49,8 +53,8 @@ public class NewsAdapter extends RecyclerView.Adapter<NewsAdapter.NewsVH> {
 
     class NewsVH extends RecyclerView.ViewHolder {
 
-        private TextView titleTV, subCategoryTV;
         private ImageView mainIV;
+        private TextView titleTV, categoryTV, dateTV;
 
         NewsVH(final View itemView) {
             super(itemView);
@@ -61,15 +65,19 @@ public class NewsAdapter extends RecyclerView.Adapter<NewsAdapter.NewsVH> {
         }
 
         private void initViews(View itemView) {
+            mainIV = itemView.findViewById(R.id.main_iv_news_item);
             titleTV = itemView.findViewById(R.id.title_tv_news_item);
-//            mainIV = itemView.findViewById(R.id.main_iv_product_item);
+            categoryTV = itemView.findViewById(R.id.category_tv_news_item);
+            dateTV = itemView.findViewById(R.id.date_tv_news_item);
         }
 
         public void setData(NewsItem newsItem) {
             itemView.setTag(newsList.get(getAdapterPosition()).getId());
             titleTV.setText(newsItem.getTitle());
-//            Glide.with(itemView.getContext()).load(new.getImageUrls().get(0))
-//                    .apply(requestOptions).into(mainIV);
+            categoryTV.setText(newsItem.getCategory());
+            dateTV.setText(TimeUtils.dateToString(new Date(newsItem.getDate())));
+            Glide.with(itemView.getContext()).load(newsItem.getCoverPhotoUrl())
+                    .apply(requestOptions).into(mainIV);
         }
     }
 }

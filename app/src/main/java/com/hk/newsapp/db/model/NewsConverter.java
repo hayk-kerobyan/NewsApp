@@ -1,6 +1,5 @@
-package com.hk.newsapp.Utils;
+package com.hk.newsapp.db.model;
 
-import com.hk.newsapp.db.model.NewsWithComponents;
 import com.hk.newsapp.model.NewsItem;
 import com.hk.newsapp.model.Photo;
 import com.hk.newsapp.model.Video;
@@ -34,12 +33,10 @@ public class NewsConverter {
         return new Pair<>(photos, videos);
     }
 
-
     public static NewsItem mergeObjects(NewsWithComponents newsWithComponents) {
         NewsItem newsItem = newsWithComponents.newsItem;
         newsItem.setPhotos(newsWithComponents.photos);
         newsItem.setVideos(newsWithComponents.videos);
         return newsItem;
     }
-
 }
