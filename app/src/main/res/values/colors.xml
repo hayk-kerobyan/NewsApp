@@ -5,4 +5,5 @@
     <color name="colorAccent">#D81B60</color>
     <color name="bg_read_news_item">#f1f1f1</color>
     <color name="bg_unread_news_item">#ffffff</color>
+    <color name="bg_photo_preview_frag">#000000</color>
 </resources>

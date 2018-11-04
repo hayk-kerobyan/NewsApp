@@ -10,7 +10,7 @@ import androidx.room.RoomDatabase;
 
 import static com.hk.newsapp.db.AppDatabase.VERSION;
 
-@Database(entities = {NewsItem.class, Photo.class, Video.class}, version = VERSION)
+@Database(entities = {NewsItem.class, Photo.class, Video.class}, version = VERSION, exportSchema = false)
 public abstract class AppDatabase extends RoomDatabase {
 
     public static final int VERSION = 1;

@@ -5,6 +5,7 @@ import com.hk.newsapp.ui.activities.NewsDetailsActivity;
 import com.hk.newsapp.ui.activities.NewsListActivity;
 import com.hk.newsapp.ui.fragments.GalleryFragment;
 import com.hk.newsapp.ui.fragments.NewsDetailsFrag;
+import com.hk.newsapp.ui.fragments.PhotoPreviewFrag;
 
 import dagger.Module;
 import dagger.android.ContributesAndroidInjector;
@@ -26,5 +27,8 @@ public abstract class DestinationModule {
 
     @ContributesAndroidInjector
     abstract GalleryFragment galleryFragment();
+
+    @ContributesAndroidInjector
+    abstract PhotoPreviewFrag photoPreviewFrag();
 
 }

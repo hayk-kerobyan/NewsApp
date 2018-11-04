@@ -25,8 +25,8 @@ class NetworkModule {
     @Provides
     Retrofit providesRetrofit(OkHttpClient okHttpClient, GsonConverterFactory gsonFactory) {
         return new Retrofit.Builder()
-                .client(okHttpClient)
                 .baseUrl("http://develandoo.getsandbox.com/")
+                .client(okHttpClient)
                 .addConverterFactory(gsonFactory)
                 .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
                 .build();

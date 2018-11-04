@@ -25,7 +25,7 @@ import androidx.recyclerview.widget.RecyclerView;
 public class VideoAdapter extends RecyclerView.Adapter<VideoAdapter.VideoViewHolder> {
 
     public VideoAdapter(@NonNull List<Video> videos, View.OnClickListener clickListener) {
-        requestOptions = new RequestOptions().placeholder(R.drawable.ic_video).centerCrop();
+        requestOptions = new RequestOptions().placeholder(R.drawable.ic_video);
         this.clickListener = clickListener;
         this.videos = videos;
     }

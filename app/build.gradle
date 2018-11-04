@@ -10,11 +10,6 @@ android {
         versionName "1.0"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         vectorDrawables.useSupportLibrary = true
-        javaCompileOptions {
-            annotationProcessorOptions {
-                arguments = ["room.schemaLocation": "$projectDir/schemas".toString()]
-            }
-        }
     }
     buildTypes {
         release {
@@ -38,10 +33,11 @@ dependencies {
     def glide_version = "4.8.0"
     def dagger_version = "2.16"
     def retrofit_version = "2.4.0"
+    def retrofit_rx_adapter_version = "2.3.0"
+    def photo_view_version = "1.2.4"
     def junit_version = "4.12"
     def test_runner_version = "1.1.0"
     def espresso_version = "3.1.0"
-
     implementation fileTree(include: ['*.jar'], dir: 'libs')
     implementation "androidx.appcompat:appcompat:$support_version"
     implementation "androidx.legacy:legacy-support-v4:$support_version"
@@ -77,10 +73,13 @@ dependencies {
     implementation "com.squareup.retrofit2:retrofit:$retrofit_version"
 
     // RxJava support for Retrofit
-    implementation "com.squareup.retrofit2:adapter-rxjava2:2.3.0"
+    implementation "com.squareup.retrofit2:adapter-rxjava2:$retrofit_rx_adapter_version"
 
     //Gson
     implementation "com.squareup.retrofit2:converter-gson:$retrofit_version"
+
+    //Photo View
+    implementation "com.github.chrisbanes.photoview:library:$photo_view_version"
 
     //Tests
     testImplementation "junit:junit:$junit_version"

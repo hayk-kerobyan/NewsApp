@@ -6,9 +6,10 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.RequestOptions;
 import com.hk.newsapp.R;
 import com.hk.newsapp.model.NewsItem;
-import com.hk.newsapp.utils.ImageUtils;
 import com.hk.newsapp.utils.TimeUtils;
 
 import java.util.Date;
@@ -21,7 +22,7 @@ import androidx.recyclerview.widget.RecyclerView;
 public class NewsAdapter extends RecyclerView.Adapter<NewsAdapter.NewsVH> {
 
     private List<NewsItem> newsList;
-    //    private RequestOptions requestOptions = new RequestOptions().centerCrop();
+    RequestOptions requestOptions = new RequestOptions().placeholder(R.drawable.ic_photo);
     private View.OnClickListener onClickListener;
 
     public NewsAdapter(List<NewsItem> newsList, View.OnClickListener onClickListener) {
@@ -73,7 +74,10 @@ public class NewsAdapter extends RecyclerView.Adapter<NewsAdapter.NewsVH> {
             itemView.setTag(getAdapterPosition());
             itemView.setBackgroundColor(ContextCompat.getColor(itemView.getContext(),
                     newsItem.isRead() ? R.color.bg_read_news_item : R.color.bg_unread_news_item));
-            ImageUtils.loadWithHorizontalRatio(mainIV, newsItem.getCoverPhotoUrl());
+            Glide.with(mainIV.getContext())
+                    .load(newsItem.getCoverPhotoUrl())
+                    .apply(requestOptions)
+                    .into(mainIV);
             titleTV.setText(newsItem.getTitle());
             categoryTV.setText(newsItem.getCategory());
             dateTV.setText(TimeUtils.dateToString(new Date(newsItem.getDate())));

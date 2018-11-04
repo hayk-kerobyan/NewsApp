@@ -1,12 +1,14 @@
 package com.hk.newsapp.ui.fragments;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.res.Configuration;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.hk.newsapp.IGalleryManager;
 import com.hk.newsapp.R;
 import com.hk.newsapp.enums.ContentType;
 import com.hk.newsapp.model.Photo;
@@ -45,15 +47,26 @@ public class GalleryFragment extends BaseFragment {
     @Inject
     GalleryFactory galleryFactory;
     private GalleryVM galleryVM;
+    private IGalleryManager galleryManager;
 
     private RecyclerView contentRV;
     private PhotosAdapter photosAdapter;
     private VideoAdapter videoAdapter;
 
+    private long newsItemId;
     private ContentType contentType;
     private List<Photo> photos;
     private List<Video> videos;
 
+    @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+        try {
+            galleryManager = (IGalleryManager) context;
+        } catch (ClassCastException e) {
+            throw new ClassCastException(context.toString() + " must implement IGalleryManager");
+        }
+    }
 
     @Nullable
     @Override
@@ -66,9 +79,16 @@ public class GalleryFragment extends BaseFragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+        retrieveArgs();
         initViews(view);
         setUpViewModel();
         subscribeObservers();
+    }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        unsubscribeObservers();
     }
 
     private Observer<List<Photo>> photosObserver = photos -> {
@@ -86,24 +106,33 @@ public class GalleryFragment extends BaseFragment {
 
     private View.OnClickListener onClickListener = v -> {
         int pos = (int) v.getTag();
-
+        long contentId;
+        if (contentType == ContentType.PHOTO) {
+            contentId = photos.get(pos).getId();
+        } else if (contentType == ContentType.VIDEO) {
+            contentId = videos.get(pos).getId();
+        } else throw new IllegalStateException("Unhandled content type");
+        galleryManager.onPhotoItemSelected(newsItemId, contentId);
     };
 
     private void initViews(View view) {
         contentRV = view.findViewById(R.id.content_rv_gallery_frag);
     }
 
-    private void setUpViewModel() {
+    private void retrieveArgs() {
         assert getArguments() != null;
         contentType = ContentType.valueOf(getArguments().getString(CONTENT_TYPE_KEY));
-        long newsItemId = getArguments().getLong(NEWS_ITEM_ID_KEY, DEFAULT_ITEM_ID);
+        newsItemId = getArguments().getLong(NEWS_ITEM_ID_KEY, DEFAULT_ITEM_ID);
+    }
+
+    private void setUpViewModel() {
         galleryVM = ViewModelProviders.of(this, galleryFactory
                 .withId(contentType, newsItemId)).get(GalleryVM.class);
     }
 
     private void updateUIForPhotos() {
         if (getContext() != null) {
-            if (photosAdapter == null) {
+            if(photosAdapter==null) {
                 photosAdapter = new PhotosAdapter(photos, onClickListener);
             }
             setUpRecyclerView(photosAdapter);
@@ -119,7 +148,7 @@ public class GalleryFragment extends BaseFragment {
         }
     }
 
-    private void setUpRecyclerView(RecyclerView.Adapter adapter){
+    private void setUpRecyclerView(RecyclerView.Adapter adapter) {
         int spanCount = isOrientationVertical() ? 2 : 4;
         StaggeredGridLayoutManager lm = new StaggeredGridLayoutManager
                 (spanCount, StaggeredGridLayoutManager.VERTICAL);
@@ -134,6 +163,19 @@ public class GalleryFragment extends BaseFragment {
                 break;
             case VIDEO:
                 galleryVM.getVideos().observe(this, videosObserver);
+                break;
+            default:
+                throw new IllegalStateException("Unhandled content type.");
+        }
+    }
+
+    private void unsubscribeObservers() {
+        switch (contentType) {
+            case PHOTO:
+                galleryVM.getPhotos().removeObserver(photosObserver);
+                break;
+            case VIDEO:
+                galleryVM.getVideos().removeObserver(videosObserver);
                 break;
             default:
                 throw new IllegalStateException("Unhandled content type.");

@@ -66,6 +66,12 @@ public class NewsDetailsFrag extends BaseFragment {
         subscribeObservers();
     }
 
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        unsubscribeObservers();
+    }
+
     private Observer<NewsItem> newsDetailsObserver = newsItem -> {
         if (newsItem != null) {
             NewsDetailsFrag.this.newsItem = newsItem;
@@ -131,9 +137,9 @@ public class NewsDetailsFrag extends BaseFragment {
         newsDetailsVM.getNewsItem().observe(this, newsDetailsObserver);
     }
 
-/*    private void unsubscribeObservers() {
+    private void unsubscribeObservers() {
         newsDetailsVM.getNewsItem().removeObserver(newsDetailsObserver);
-    }*/
+    }
 
     private void openGalleryActivity(ContentType contentType) {
         if(getContext()!=null){

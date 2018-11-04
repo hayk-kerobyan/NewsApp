@@ -56,6 +56,12 @@ public class NewsListActivity extends BaseActivity {
     }
 
     @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        unsubscribeObservers();
+    }
+
+    @Override
     protected void onNetworkStateChanged(boolean isConnected) {
 
     }
@@ -104,9 +110,7 @@ public class NewsListActivity extends BaseActivity {
         }
     };
 
-    private SwipeRefreshLayout.OnRefreshListener refreshListener = () -> {
-        newsListVM.loadNews();
-    };
+    private SwipeRefreshLayout.OnRefreshListener refreshListener = () -> newsListVM.loadNews();
 
     private void init() {
         newsSRL = findViewById(R.id.news_srl_main_act);
@@ -140,16 +144,15 @@ public class NewsListActivity extends BaseActivity {
         newsListVM.getNewsItems().observe(this, newsObserver);
     }
 
-/*    private void unsubscribeObservers() {
+    private void unsubscribeObservers() {
         newsListVM.getRequestResult().removeObserver(requestResultObserver);
         newsListVM.getNewsItems().removeObserver(newsObserver);
-    }*/
+    }
 
 
     private void launchDetailsFrag(long newsitemId) {
         replaceFragment(R.id.newsitem_detail_container, NewsDetailsFrag.newInstance(newsitemId),
                 NEWS_DETAILS_TAG, false);
-
     }
 
     private void openDetailsActivity(long newsItemId) {

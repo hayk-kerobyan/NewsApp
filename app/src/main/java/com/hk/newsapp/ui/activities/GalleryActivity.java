@@ -4,19 +4,28 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.MenuItem;
+import android.view.View;
+import android.view.WindowManager;
 
+import com.hk.newsapp.IGalleryManager;
 import com.hk.newsapp.R;
 import com.hk.newsapp.enums.ContentType;
 import com.hk.newsapp.ui.fragments.GalleryFragment;
+import com.hk.newsapp.ui.fragments.PhotoPreviewFrag;
+import com.hk.newsapp.widget.PhotoPreviewVP;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.widget.Toolbar;
+import androidx.fragment.app.Fragment;
 
+import static com.hk.newsapp.enums.ContentType.PHOTO;
+import static com.hk.newsapp.utils.Constants.DEFAULT_ITEM_ID;
 import static com.hk.newsapp.utils.Constants.GALLERY_TAG;
 import static com.hk.newsapp.utils.Constants.NEWS_ITEM_ID_KEY;
+import static com.hk.newsapp.utils.Constants.PHOTO_PREVIEW_TAG;
 
-public class GalleryActivity extends BaseActivity {
+public class GalleryActivity extends BaseActivity implements IGalleryManager {
 
     public static Intent getIntent(Context context, ContentType contentType, long newsItemId) {
         Intent intent = new Intent(context, GalleryActivity.class);
@@ -31,8 +40,8 @@ public class GalleryActivity extends BaseActivity {
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        setContentView(R.layout.act_news_details);
-        Toolbar toolbar = findViewById(R.id.detail_toolbar);
+        setContentView(R.layout.act_gallery);
+        Toolbar toolbar = findViewById(R.id.gallery_toolbar);
         setSupportActionBar(toolbar);
 
         ActionBar actionBar = getSupportActionBar();
@@ -41,6 +50,12 @@ public class GalleryActivity extends BaseActivity {
         }
         if (savedInstanceState == null) {
             launchGalleryFrag();
+        } else {
+            Fragment fragment = getSupportFragmentManager()
+                    .findFragmentById(R.id.gallery_container);
+            if (!(fragment instanceof GalleryFragment)) {
+                hideStatusBar();
+            }
         }
     }
 
@@ -59,11 +74,49 @@ public class GalleryActivity extends BaseActivity {
 
     }
 
+    @Override
+    public void onPhotoItemSelected(long newsItemId, long contentId) {
+        hideStatusBar();
+        launchPhotoPreviewFrag(newsItemId, contentId);
+    }
+
+    @Override
+    public void onVideoItemSelected(long newsItemId, long contentId) {
+
+    }
+
+    @Override
+    public void onBackPressed() {
+        if(getSupportFragmentManager().getBackStackEntryCount()>0){
+            showStatusBar();
+        }
+        super.onBackPressed();
+    }
+
     private void launchGalleryFrag() {
         String contentType = getIntent().getStringExtra(CONTENT_TYPE_KEY);
-        long newsItemId = getIntent().getLongExtra(NEWS_ITEM_ID_KEY, -1);
-        addFragment(R.id.newsitem_detail_container,
+        long newsItemId = getIntent().getLongExtra(NEWS_ITEM_ID_KEY, DEFAULT_ITEM_ID);
+        addFragment(R.id.gallery_container,
                 GalleryFragment.newInstance(contentType, newsItemId),
                 GALLERY_TAG, false);
+    }
+
+    private void launchPhotoPreviewFrag(long newsItemId, long contentId) {
+        replaceFragment(R.id.gallery_container, PhotoPreviewFrag
+                .newInstance(PHOTO, newsItemId, contentId), PHOTO_PREVIEW_TAG, true);
+    }
+
+    private void hideStatusBar() {
+        getWindow().addFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN);
+        if (getSupportActionBar() != null) {
+            getSupportActionBar().hide();
+        }
+    }
+
+    private void showStatusBar() {
+        getWindow().clearFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN);
+        if(getSupportActionBar()!=null){
+            getSupportActionBar().show();
+        }
     }
 }

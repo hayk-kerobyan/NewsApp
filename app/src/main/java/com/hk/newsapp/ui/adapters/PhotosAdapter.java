@@ -25,7 +25,7 @@ import androidx.recyclerview.widget.RecyclerView;
 public class PhotosAdapter extends RecyclerView.Adapter<PhotosAdapter.PhotoViewHolder> {
 
     public PhotosAdapter(@NonNull List<Photo> photos, View.OnClickListener clickListener) {
-        requestOptions = new RequestOptions().placeholder(R.drawable.ic_photo)/*.centerCrop()*/;
+        requestOptions = new RequestOptions().placeholder(R.drawable.ic_photo);
         this.clickListener = clickListener;
         this.photos = photos;
     }
