@@ -10,7 +10,8 @@ import androidx.annotation.NonNull;
 import androidx.lifecycle.ViewModel;
 import androidx.lifecycle.ViewModelProvider;
 
-import static com.hk.newsapp.vm.NewsListVM.DEFAULT_ITEM_ID;
+import static com.hk.newsapp.utils.Constants.DEFAULT_ITEM_ID;
+
 
 @Singleton
 public class NewsDetailsFactory extends ViewModelProvider.NewInstanceFactory {
@@ -33,7 +34,7 @@ public class NewsDetailsFactory extends ViewModelProvider.NewInstanceFactory {
     @Override
     public <T extends ViewModel> T create(@NonNull Class<T> modelClass) {
         if (id == DEFAULT_ITEM_ID)
-            throw new IllegalArgumentException("Id is not set before creation");
+            throw new IllegalArgumentException("Id is not set before VM creation");
         return (T) new NewsDetailsVM(newsRepo, id);
     }
 }

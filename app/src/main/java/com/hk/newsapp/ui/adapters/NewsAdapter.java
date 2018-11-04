@@ -3,13 +3,9 @@ package com.hk.newsapp.ui.adapters;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.ViewTreeObserver;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.bumptech.glide.Glide;
-import com.bumptech.glide.request.RequestOptions;
-import com.bumptech.glide.request.target.Target;
 import com.hk.newsapp.R;
 import com.hk.newsapp.model.NewsItem;
 import com.hk.newsapp.utils.ImageUtils;
@@ -25,7 +21,7 @@ import androidx.recyclerview.widget.RecyclerView;
 public class NewsAdapter extends RecyclerView.Adapter<NewsAdapter.NewsVH> {
 
     private List<NewsItem> newsList;
-//    private RequestOptions requestOptions = new RequestOptions().centerCrop();
+    //    private RequestOptions requestOptions = new RequestOptions().centerCrop();
     private View.OnClickListener onClickListener;
 
     public NewsAdapter(List<NewsItem> newsList, View.OnClickListener onClickListener) {
@@ -63,9 +59,7 @@ public class NewsAdapter extends RecyclerView.Adapter<NewsAdapter.NewsVH> {
         NewsVH(final View itemView) {
             super(itemView);
             initViews(itemView);
-            if(onClickListener!=null){
-                itemView.setOnClickListener(onClickListener);
-            }
+            itemView.setOnClickListener(onClickListener);
         }
 
         private void initViews(View itemView) {
@@ -78,7 +72,7 @@ public class NewsAdapter extends RecyclerView.Adapter<NewsAdapter.NewsVH> {
         public void setData(NewsItem newsItem) {
             itemView.setTag(getAdapterPosition());
             itemView.setBackgroundColor(ContextCompat.getColor(itemView.getContext(),
-                    newsItem.isRead()?R.color.readNewsItemBG:R.color.unreadNewsItemBG));
+                    newsItem.isRead() ? R.color.bg_read_news_item : R.color.bg_unread_news_item));
             ImageUtils.loadWithHorizontalRatio(mainIV, newsItem.getCoverPhotoUrl());
             titleTV.setText(newsItem.getTitle());
             categoryTV.setText(newsItem.getCategory());

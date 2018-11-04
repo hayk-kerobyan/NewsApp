@@ -1,6 +1,5 @@
 package com.hk.newsapp.ui.activities;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 
@@ -20,16 +19,17 @@ import androidx.appcompat.widget.Toolbar;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
-import static com.hk.newsapp.ui.fragments.NewsDetailsFrag.NEWS_DETAILS_TAG;
-import static com.hk.newsapp.ui.fragments.NewsDetailsFrag.NEWS_ITEM_ID_KEY;
-import static com.hk.newsapp.vm.NewsListVM.DEFAULT_ITEM_ID;
+import static com.hk.newsapp.utils.Constants.DEFAULT_ITEM_ID;
+import static com.hk.newsapp.utils.Constants.NEWS_DETAILS_TAG;
 
 public class NewsListActivity extends BaseActivity {
 
     private NewsListVM newsListVM;
 
-    private RecyclerView mNewsRV;
+    private SwipeRefreshLayout newsSRL;
+    private RecyclerView newsRV;
     private NewsAdapter adapter;
 
     private List<NewsItem> mNewsList;
@@ -50,8 +50,7 @@ public class NewsListActivity extends BaseActivity {
         if (findViewById(R.id.newsitem_detail_container) != null) {
             mTwoPane = true;
         }
-
-        mNewsRV = findViewById(R.id.newsitem_list);
+        init();
         setUpViewModel();
         subscribeObservers();
     }
@@ -72,8 +71,7 @@ public class NewsListActivity extends BaseActivity {
         long newsId = newsItem.getId();
         newsListVM.setLastItemId(newsId);
         if (mTwoPane) {
-            replaceFragment(R.id.newsitem_detail_container, NewsDetailsFrag.newInstance(newsId),
-                    NEWS_DETAILS_TAG, false);
+            launchDetailsFrag(newsId);
         } else {
             openDetailsActivity(newsId);
         }
@@ -83,17 +81,14 @@ public class NewsListActivity extends BaseActivity {
         if (requestResult != null) {
             switch (requestResult) {
                 case IN_PROGRESS:
-                    showProgressDialog(null);
-                    disableUserActions();
+                    newsSRL.setRefreshing(true);
                     break;
                 case SUCCESS:
-                    dismissProgressDialog();
-                    enableUserActions();
+                    newsSRL.setRefreshing(false);
                     newsListVM.onResultReceived();
                     break;
                 case FAILURE:
-                    dismissProgressDialog();
-                    enableUserActions();
+                    newsSRL.setRefreshing(false);
                     showRequestError();
                     newsListVM.onResultReceived();
                     break;
@@ -109,13 +104,23 @@ public class NewsListActivity extends BaseActivity {
         }
     };
 
+    private SwipeRefreshLayout.OnRefreshListener refreshListener = () -> {
+        newsListVM.loadNews();
+    };
+
+    private void init() {
+        newsSRL = findViewById(R.id.news_srl_main_act);
+        newsRV = findViewById(R.id.news_rv_main_act);
+        newsSRL.setOnRefreshListener(refreshListener);
+    }
+
     private void setUpViewModel() {
         newsListVM = ViewModelProviders.of(this, newsListFactory).get(NewsListVM.class);
     }
 
     private void setupRecyclerView() {
         adapter = new NewsAdapter(mNewsList, mOnClickListener);
-        mNewsRV.setAdapter(adapter);
+        newsRV.setAdapter(adapter);
     }
 
     private void updateDetailPane() {
@@ -126,8 +131,7 @@ public class NewsListActivity extends BaseActivity {
                     return;
                 lastItemId = mNewsList.get(0).getId();
             }
-            replaceFragment(R.id.newsitem_detail_container, NewsDetailsFrag.newInstance(lastItemId),
-                    NEWS_DETAILS_TAG, false);
+            launchDetailsFrag(lastItemId);
         }
     }
 
@@ -136,14 +140,19 @@ public class NewsListActivity extends BaseActivity {
         newsListVM.getNewsItems().observe(this, newsObserver);
     }
 
-    private void unsubscribeObservers() {
+/*    private void unsubscribeObservers() {
         newsListVM.getRequestResult().removeObserver(requestResultObserver);
         newsListVM.getNewsItems().removeObserver(newsObserver);
+    }*/
+
+
+    private void launchDetailsFrag(long newsitemId) {
+        replaceFragment(R.id.newsitem_detail_container, NewsDetailsFrag.newInstance(newsitemId),
+                NEWS_DETAILS_TAG, false);
+
     }
 
-    private void openDetailsActivity(long newsId) {
-        Intent intent = new Intent(this, NewsDetailsActivity.class);
-        intent.putExtra(NEWS_ITEM_ID_KEY, newsId);
-        startActivity(intent);
+    private void openDetailsActivity(long newsItemId) {
+        startActivity(NewsDetailsActivity.getIntent(this, newsItemId));
     }
 }

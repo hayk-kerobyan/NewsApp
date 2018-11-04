@@ -12,11 +12,10 @@
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
-        android:theme="@style/AppTheme">
+        android:theme="@style/AppTheme.NoActionBar">
         <activity
             android:name=".ui.activities.NewsListActivity"
-            android:label="@string/title_newsitem_list"
-            android:theme="@style/AppTheme.NoActionBar">
+            android:label="@string/title_newsitem_list">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -26,12 +25,12 @@
         <activity
             android:name=".ui.activities.NewsDetailsActivity"
             android:label="@string/title_newsitem_detail"
-            android:parentActivityName=".ui.activities.NewsListActivity"
-            android:theme="@style/AppTheme.NoActionBar">
+            android:parentActivityName=".ui.activities.NewsListActivity">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.hk.newsapp.ui.activities.NewsListActivity" />
         </activity>
+        <activity android:name=".ui.activities.GalleryActivity" />
     </application>
 
 </manifest>

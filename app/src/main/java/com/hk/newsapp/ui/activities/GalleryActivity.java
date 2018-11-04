@@ -6,30 +6,31 @@ import android.os.Bundle;
 import android.view.MenuItem;
 
 import com.hk.newsapp.R;
-import com.hk.newsapp.ui.fragments.NewsDetailsFrag;
+import com.hk.newsapp.enums.ContentType;
+import com.hk.newsapp.ui.fragments.GalleryFragment;
 
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.widget.Toolbar;
 
-import static com.hk.newsapp.utils.Constants.DEFAULT_ITEM_ID;
-import static com.hk.newsapp.utils.Constants.NEWS_DETAILS_TAG;
+import static com.hk.newsapp.utils.Constants.GALLERY_TAG;
 import static com.hk.newsapp.utils.Constants.NEWS_ITEM_ID_KEY;
 
-public class NewsDetailsActivity extends BaseActivity {
+public class GalleryActivity extends BaseActivity {
 
-    public static Intent getIntent(Context context, long newsItemId) {
-        Intent intent = new Intent(context, NewsDetailsActivity.class);
+    public static Intent getIntent(Context context, ContentType contentType, long newsItemId) {
+        Intent intent = new Intent(context, GalleryActivity.class);
+        intent.putExtra(CONTENT_TYPE_KEY, contentType.name());
         intent.putExtra(NEWS_ITEM_ID_KEY, newsItemId);
         return intent;
     }
 
+    public static final String CONTENT_TYPE_KEY = "CONTENT_TYPE_KEY";
+
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        if (getResources().getBoolean(R.bool.two_pane_screen)) {
-            finish();
-            return;
-        }
+
         setContentView(R.layout.act_news_details);
         Toolbar toolbar = findViewById(R.id.detail_toolbar);
         setSupportActionBar(toolbar);
@@ -39,7 +40,7 @@ public class NewsDetailsActivity extends BaseActivity {
             actionBar.setDisplayHomeAsUpEnabled(true);
         }
         if (savedInstanceState == null) {
-            launchDetailsFrag();
+            launchGalleryFrag();
         }
     }
 
@@ -58,9 +59,11 @@ public class NewsDetailsActivity extends BaseActivity {
 
     }
 
-    private void launchDetailsFrag() {
-        addFragment(R.id.newsitem_detail_container, NewsDetailsFrag
-                        .newInstance(getIntent().getLongExtra(NEWS_ITEM_ID_KEY, DEFAULT_ITEM_ID)),
-                NEWS_DETAILS_TAG, false);
+    private void launchGalleryFrag() {
+        String contentType = getIntent().getStringExtra(CONTENT_TYPE_KEY);
+        long newsItemId = getIntent().getLongExtra(NEWS_ITEM_ID_KEY, -1);
+        addFragment(R.id.newsitem_detail_container,
+                GalleryFragment.newInstance(contentType, newsItemId),
+                GALLERY_TAG, false);
     }
 }

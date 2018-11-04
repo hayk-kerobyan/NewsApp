@@ -1,7 +1,9 @@
 package com.hk.newsapp.di;
 
+import com.hk.newsapp.ui.activities.GalleryActivity;
 import com.hk.newsapp.ui.activities.NewsDetailsActivity;
 import com.hk.newsapp.ui.activities.NewsListActivity;
+import com.hk.newsapp.ui.fragments.GalleryFragment;
 import com.hk.newsapp.ui.fragments.NewsDetailsFrag;
 
 import dagger.Module;
@@ -18,5 +20,11 @@ public abstract class DestinationModule {
 
     @ContributesAndroidInjector
     abstract NewsDetailsFrag newsDetailsFrag();
+
+    @ContributesAndroidInjector
+    abstract GalleryActivity galleryActivity();
+
+    @ContributesAndroidInjector
+    abstract GalleryFragment galleryFragment();
 
 }

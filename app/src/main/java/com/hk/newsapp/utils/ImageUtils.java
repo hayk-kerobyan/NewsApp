@@ -29,4 +29,24 @@ public class ImageUtils {
                     .into(imageView);
         }
     }
+    public static void loadWithVerticalRatio(final ImageView imageView, final String imageUrl) {
+        if (imageView.getWidth() == 0) {
+            imageView.getViewTreeObserver().addOnPreDrawListener(
+                    new ViewTreeObserver.OnPreDrawListener() {
+                        @Override
+                        public boolean onPreDraw() {
+                            imageView.getViewTreeObserver().removeOnPreDrawListener(this);
+                            loadWithHorizontalRatio(imageView, imageUrl);
+                            return true;
+                        }
+                    });
+        } else {
+            Glide.with(imageView.getContext())
+                    .load(imageUrl)
+                    .apply(new RequestOptions()
+                            .fitCenter()
+                            .override(imageView.getWidth(), Target.SIZE_ORIGINAL))
+                    .into(imageView);
+        }
+    }
 }

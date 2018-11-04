@@ -13,47 +13,52 @@ import javax.inject.Singleton;
 
 import androidx.core.util.Pair;
 import io.reactivex.Observable;
+import io.reactivex.Single;
 
 @Singleton
 public class NewsLocalRepo {
 
     @Inject
-    public NewsLocalRepo(AppDatabase appDatabase) {
+    NewsLocalRepo(AppDatabase appDatabase) {
         this.appDatabase = appDatabase;
     }
 
     private AppDatabase appDatabase;
 
-    public Observable<List<NewsItem>> getAll() {
-        return appDatabase.newsDao().getAll();
+    //Updates
+    void updateNewsItem(NewsItem newsItem) {
+        appDatabase.newsDao().updateNewsItem(newsItem);
     }
 
-    public Observable<NewsItem> getByIdWithComponents(long id) {
+    //Inserts
+    List<Long> insertNewsItems(List<NewsItem> newsItems) {
+        return appDatabase.newsDao().insertNews(newsItems);
+    }
+
+    void insertComponents(Pair<List<Photo>, List<Video>> components) {
+        appDatabase.newsDao().insertComponents(components);
+    }
+
+    //Queries
+    Observable<NewsItem> getByIdWithComponents(long id) {
         return appDatabase.newsDao().getByIdWithComponents(id)
                 .map(NewsConverter::mergeObjects);
     }
 
-    public List<Long> insertNewsItems(List<NewsItem> newsItems) {
-        return appDatabase.newsDao().insertNews(newsItems);
+    public Single<List<Photo>> getPhotosForNewsItem(long newsItemId) {
+        return appDatabase.photoDao().getAllForNewsItem(newsItemId);
     }
 
-    public void insertComponents(Pair<List<Photo>, List<Video>> components) {
-        appDatabase.newsDao().insertComponents(components);
+    public Single<List<Video>> getVideosForNewsItem(long newsItemId) {
+        return appDatabase.videoDao().getAllForNewsItem(newsItemId);
     }
 
-    public void insertPhotos(List<Photo> photos) {
-        appDatabase.photoDao().insertAll(photos);
+    public Observable<List<NewsItem>> getAll() {
+        return appDatabase.newsDao().getAll();
     }
 
-    public void insertVideos(List<Video> videos) {
-        appDatabase.videoDao().insertAll(videos);
-    }
-
-    public void deleteAll() {
+    //Deletes
+    void deleteAll() {
         appDatabase.newsDao().deleteAll();
-    }
-
-    public void updateNewsItem(NewsItem newsItem) {
-        appDatabase.newsDao().updateNewsItem(newsItem);
     }
 }

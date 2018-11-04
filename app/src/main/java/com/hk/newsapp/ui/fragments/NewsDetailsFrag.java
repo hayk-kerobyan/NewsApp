@@ -10,8 +10,9 @@ import android.widget.TextView;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
 import com.hk.newsapp.R;
+import com.hk.newsapp.enums.ContentType;
 import com.hk.newsapp.model.NewsItem;
-import com.hk.newsapp.utils.ImageUtils;
+import com.hk.newsapp.ui.activities.GalleryActivity;
 import com.hk.newsapp.utils.TimeUtils;
 import com.hk.newsapp.vm.NewsDetailsVM;
 import com.hk.newsapp.vm.factory.NewsDetailsFactory;
@@ -25,6 +26,8 @@ import androidx.annotation.Nullable;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 
+import static com.hk.newsapp.utils.Constants.NEWS_ITEM_ID_KEY;
+
 public class NewsDetailsFrag extends BaseFragment {
 
     public static NewsDetailsFrag newInstance(long id) {
@@ -36,14 +39,11 @@ public class NewsDetailsFrag extends BaseFragment {
         return fragment;
     }
 
-    public static final String NEWS_ITEM_ID_KEY = "NEWS_ITEM_ID_KEY";
-    public static final String NEWS_DETAILS_TAG = "NEWS_DETAILS_TAG";
-
     @Inject
     NewsDetailsFactory newsDetailsFactory;
     private NewsDetailsVM newsDetailsVM;
 
-    private RequestOptions requestOptions = new RequestOptions().centerCrop();
+    private RequestOptions requestOptions = new RequestOptions().placeholder(R.drawable.ic_photo);
 
     private ImageView mainIV, photoIV, videoIV;
     private TextView titleTV, categoryTV, dateTV, descTV;
@@ -63,18 +63,7 @@ public class NewsDetailsFrag extends BaseFragment {
         super.onViewCreated(view, savedInstanceState);
         initViews(view);
         setUpViewModel();
-    }
-
-    @Override
-    public void onStart() {
-        super.onStart();
         subscribeObservers();
-    }
-
-    @Override
-    public void onStop() {
-        super.onStop();
-        unsubscribeObservers();
     }
 
     private Observer<NewsItem> newsDetailsObserver = newsItem -> {
@@ -85,14 +74,17 @@ public class NewsDetailsFrag extends BaseFragment {
     };
 
     private View.OnClickListener onClickListener = v -> {
+        ContentType contentType = null;
         switch (v.getId()) {
             case R.id.photo_iv_news_details_frag:
-
+                contentType = ContentType.PHOTO;
                 break;
             case R.id.video_iv_news_details_frag:
-
+                contentType = ContentType.VIDEO;
                 break;
         }
+        assert contentType !=null;
+        openGalleryActivity(contentType);
     };
 
     private void initViews(View view) {
@@ -139,7 +131,14 @@ public class NewsDetailsFrag extends BaseFragment {
         newsDetailsVM.getNewsItem().observe(this, newsDetailsObserver);
     }
 
-    private void unsubscribeObservers() {
+/*    private void unsubscribeObservers() {
         newsDetailsVM.getNewsItem().removeObserver(newsDetailsObserver);
+    }*/
+
+    private void openGalleryActivity(ContentType contentType) {
+        if(getContext()!=null){
+            getContext().startActivity(GalleryActivity
+                    .getIntent(getContext(), contentType, newsItem.getId()));
+        }
     }
 }
