@@ -7,7 +7,10 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.pm.ActivityInfo;
 import android.os.Bundle;
+import android.os.Handler;
+import android.view.View;
 import android.view.WindowManager;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.hk.newsapp.R;
@@ -23,9 +26,12 @@ import dagger.android.support.DaggerAppCompatActivity;
 public abstract class BaseActivity extends DaggerAppCompatActivity {
 
     protected BroadcastReceiver networkReceiver;
+    public static final int CONNECTED_STATE_MESSAGE_DELAY = 1000;
     public static final String CONNECTIVITY_CHANGE_ACTION = "android.net.conn.CONNECTIVITY_CHANGE";
+    private Handler handler;
     private Toast toast;
     private ProgressDialog progressDialog;
+    protected TextView networkStateTV;
 
     @Inject
     NetworkManger networkManger;
@@ -54,8 +60,19 @@ public abstract class BaseActivity extends DaggerAppCompatActivity {
     @Override
     protected void onDestroy() {
         dismissProgressDialog();
+        if (handler != null) {
+            handler.removeCallbacks(runnable);
+        }
         super.onDestroy();
     }
+
+    private Runnable runnable = new Runnable() {
+        @Override
+        public void run() {
+            networkStateTV.setVisibility(View.GONE);
+            handler = null;
+        }
+    };
 
     protected void addFragment(int containerViewId, Fragment fragment, String fragmentTag,
                                boolean addToBackStack) {
@@ -82,7 +99,7 @@ public abstract class BaseActivity extends DaggerAppCompatActivity {
             public void onReceive(Context context, Intent intent) {
                 if (intent.getAction() != null
                         && intent.getAction().equals(CONNECTIVITY_CHANGE_ACTION)) {
-                    onNetworkStateChanged(isConnected());
+                    handleNetworkStateChanged(isConnected());
                 }
             }
         };
@@ -103,8 +120,35 @@ public abstract class BaseActivity extends DaggerAppCompatActivity {
         return networkManger.isConnected();
     }
 
+    private void handleNetworkStateChanged(boolean isConnected) {
+        if(networkStateTV!=null) {
+            if (isConnected) {
+                setConnectedState();
+            } else {
+                setDisconnectedState();
+            }
+        }
+        onNetworkStateChanged(isConnected);
+    }
+
     protected abstract void onNetworkStateChanged(boolean isConnected);
 
+    private void setConnectedState() {
+        networkStateTV.setText(R.string.connected);
+        networkStateTV.setBackgroundColor(getResources().getColor(R.color.bg_network_connected_tv));
+        if (handler != null) {
+            handler.removeCallbacks(runnable);
+        } else {
+            handler = new Handler();
+        }
+        handler.postDelayed(runnable, CONNECTED_STATE_MESSAGE_DELAY);
+    }
+
+    private void setDisconnectedState() {
+        networkStateTV.setVisibility(View.VISIBLE);
+        networkStateTV.setText(R.string.disconnected);
+        networkStateTV.setBackgroundColor(getResources().getColor(R.color.bg_network_disconnected_tv));
+    }
 
     public void showNetworkConnectionFailure() {
         showToast(getString(R.string.turn_on_internet_message));

@@ -6,4 +6,7 @@
     <color name="bg_read_news_item">#f1f1f1</color>
     <color name="bg_unread_news_item">#ffffff</color>
     <color name="bg_photo_preview_frag">#000000</color>
+    <color name="bg_network_disconnected_tv">#ff0000</color>
+    <color name="bg_network_connected_tv">#50f100</color>
+    <color name="bg_network_state_text">#ffffff</color>
 </resources>

@@ -113,6 +113,7 @@ public class NewsListActivity extends BaseActivity {
     private SwipeRefreshLayout.OnRefreshListener refreshListener = () -> newsListVM.loadNews();
 
     private void init() {
+        networkStateTV = findViewById(R.id.network_state_tv);
         newsSRL = findViewById(R.id.news_srl_main_act);
         newsRV = findViewById(R.id.news_rv_main_act);
         newsSRL.setOnRefreshListener(refreshListener);
@@ -133,10 +134,34 @@ public class NewsListActivity extends BaseActivity {
             if (lastItemId == DEFAULT_ITEM_ID) {
                 if (mNewsList.isEmpty())
                     return;
-                lastItemId = mNewsList.get(0).getId();
+                setFirstNewsItemSelected();
+            } else {
+                boolean contentExists = false;
+                for (NewsItem newsItem : mNewsList) {
+                    if (lastItemId == newsItem.getId()) {
+                        contentExists = true;
+                        break;
+                    }
+                }
+                if (!contentExists) {
+                    setFirstNewsItemSelected();
+                } else {
+                    launchDetailsFrag(lastItemId);
+                }
             }
-            launchDetailsFrag(lastItemId);
         }
+    }
+
+    private void setFirstNewsItemSelected() {
+        NewsItem newsItem = mNewsList.get(0);
+        if (!newsItem.isRead()) {
+            newsItem.setRead(true);
+            newsListVM.updateNewsItem(newsItem);
+            adapter.notifyItemChanged(0);
+        }
+        long newsId = newsItem.getId();
+        newsListVM.setLastItemId(newsId);
+        launchDetailsFrag(newsId);
     }
 
     private void subscribeObservers() {

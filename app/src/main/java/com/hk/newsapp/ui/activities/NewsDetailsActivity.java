@@ -32,6 +32,7 @@ public class NewsDetailsActivity extends BaseActivity {
         }
         setContentView(R.layout.act_news_details);
         Toolbar toolbar = findViewById(R.id.detail_toolbar);
+        networkStateTV = findViewById(R.id.network_state_tv);
         setSupportActionBar(toolbar);
 
         ActionBar actionBar = getSupportActionBar();

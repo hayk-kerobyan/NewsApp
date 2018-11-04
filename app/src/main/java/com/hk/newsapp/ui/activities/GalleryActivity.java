@@ -38,6 +38,7 @@ public class GalleryActivity extends BaseActivity implements IGalleryManager {
         super.onCreate(savedInstanceState);
 
         setContentView(R.layout.act_gallery);
+        networkStateTV = findViewById(R.id.network_state_tv);
         Toolbar toolbar = findViewById(R.id.gallery_toolbar);
         setSupportActionBar(toolbar);
 
