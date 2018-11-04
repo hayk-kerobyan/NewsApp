@@ -74,14 +74,6 @@ public class PhotosAdapter extends RecyclerView.Adapter<PhotosAdapter.PhotoViewH
 
         private void setData(Photo photo) {
             itemView.setTag(getAdapterPosition());
-/*            Glide.with(itemView.getContext()).load(url).asBitmap().into(new SimpleTarget<Bitmap>() {
-                @Override
-                public void onResourceReady(Bitmap resource, GlideAnimation<? super Bitmap> glideAnimation) {
-
-
-                }
-            });*/
-//            ImageUtils.loadWithVerticalRatio(thumbnailIV, photo.getThumbnailUrl());
             Glide.with(itemView.getContext())
                     .load(photo.getThumbnailUrl())
                     .listener(new RequestListener<Drawable>() {
