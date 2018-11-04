@@ -8,7 +8,6 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
-import com.bumptech.glide.request.RequestOptions;
 import com.hk.newsapp.R;
 import com.hk.newsapp.enums.ContentType;
 import com.hk.newsapp.model.NewsItem;
@@ -42,8 +41,6 @@ public class NewsDetailsFrag extends BaseFragment {
     @Inject
     NewsDetailsFactory newsDetailsFactory;
     private NewsDetailsVM newsDetailsVM;
-
-    private RequestOptions requestOptions = new RequestOptions().placeholder(R.drawable.ic_photo);
 
     private ImageView mainIV, photoIV, videoIV;
     private TextView titleTV, categoryTV, dateTV, descTV;
@@ -112,8 +109,7 @@ public class NewsDetailsFrag extends BaseFragment {
 
     private void updateUI() {
         if (getContext() != null) {
-            Glide.with(getContext()).load(newsItem.getCoverPhotoUrl())
-                    .apply(requestOptions).into(mainIV);
+            Glide.with(getContext()).load(newsItem.getCoverPhotoUrl()).into(mainIV);
             titleTV.setText(newsItem.getTitle());
             categoryTV.setText(newsItem.getCategory());
             dateTV.setText(TimeUtils.dateToString(new Date(newsItem.getDate())));

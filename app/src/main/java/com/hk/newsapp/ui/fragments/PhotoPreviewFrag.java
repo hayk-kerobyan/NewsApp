@@ -6,7 +6,6 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.hk.newsapp.R;
-import com.hk.newsapp.enums.ContentType;
 import com.hk.newsapp.model.Photo;
 import com.hk.newsapp.ui.adapters.PhotoPreviewAdapter;
 import com.hk.newsapp.vm.GalleryVM;
@@ -22,16 +21,15 @@ import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.viewpager.widget.ViewPager;
 
+import static com.hk.newsapp.enums.ContentType.PHOTO;
 import static com.hk.newsapp.utils.Constants.CONTENT_ID_KEY;
-import static com.hk.newsapp.utils.Constants.CONTENT_TYPE_KEY;
 import static com.hk.newsapp.utils.Constants.DEFAULT_ITEM_ID;
 import static com.hk.newsapp.utils.Constants.NEWS_ITEM_ID_KEY;
 
 public class PhotoPreviewFrag extends BaseFragment {
 
-    public static PhotoPreviewFrag newInstance(ContentType contentType, long newsItemId, long contentId) {
+    public static PhotoPreviewFrag newInstance(long newsItemId, long contentId) {
         Bundle args = new Bundle();
-        args.putString(CONTENT_TYPE_KEY, contentType.name());
         args.putLong(CONTENT_ID_KEY, contentId);
         args.putLong(NEWS_ITEM_ID_KEY, newsItemId);
         PhotoPreviewFrag fragment = new PhotoPreviewFrag();
@@ -79,6 +77,12 @@ public class PhotoPreviewFrag extends BaseFragment {
         outState.putLong(CONTENT_ID_KEY, contentId);
     }
 
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        unsubscribeObservers();
+    }
+
     private ViewPager.OnPageChangeListener pageChangeListener = new ViewPager.OnPageChangeListener() {
         @Override
         public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
@@ -114,7 +118,7 @@ public class PhotoPreviewFrag extends BaseFragment {
 
     private void setUpViewModel(long newsItemId) {
         galleryVM = ViewModelProviders.of(this, galleryFactory
-                .withId(ContentType.PHOTO, newsItemId)).get(GalleryVM.class);
+                .withId(PHOTO, newsItemId)).get(GalleryVM.class);
     }
 
     private void updateUI() {
@@ -140,5 +144,9 @@ public class PhotoPreviewFrag extends BaseFragment {
 
     private void subscribeObservers() {
         galleryVM.getPhotos().observe(this, photosObserver);
+    }
+
+    private void unsubscribeObservers() {
+        galleryVM.getPhotos().removeObserver(photosObserver);
     }
 }

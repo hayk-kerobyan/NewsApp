@@ -12,7 +12,11 @@ public class Constants {
     public static final String NEWS_DETAILS_TAG = "NEWS_DETAILS_TAG";
     public static final String GALLERY_TAG = "GALLERY_TAG";
     public static final String PHOTO_PREVIEW_TAG = "PHOTO_PREVIEW_TAG";
+    public static final String VIDEO_PREVIEW_TAG = "VIDEO_PREVIEW_TAG";
 
     //Default Values
     public static final long DEFAULT_ITEM_ID = -1L;
+
+    public static final String YOUTUBE_BASE_URL = "http://www.youtube.com/watch?v=";
+
 }

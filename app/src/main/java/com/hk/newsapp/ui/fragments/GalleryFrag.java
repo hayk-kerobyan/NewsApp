@@ -1,8 +1,9 @@
 package com.hk.newsapp.ui.fragments;
 
-import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.content.res.Configuration;
+import android.net.Uri;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -32,14 +33,15 @@ import androidx.recyclerview.widget.StaggeredGridLayoutManager;
 import static com.hk.newsapp.utils.Constants.CONTENT_TYPE_KEY;
 import static com.hk.newsapp.utils.Constants.DEFAULT_ITEM_ID;
 import static com.hk.newsapp.utils.Constants.NEWS_ITEM_ID_KEY;
+import static com.hk.newsapp.utils.Constants.YOUTUBE_BASE_URL;
 
-public class GalleryFragment extends BaseFragment {
+public class GalleryFrag extends BaseFragment {
 
-    public static GalleryFragment newInstance(String contentType, long newsItemId) {
+    public static GalleryFrag newInstance(String contentType, long newsItemId) {
         Bundle args = new Bundle();
         args.putString(CONTENT_TYPE_KEY, contentType);
         args.putLong(NEWS_ITEM_ID_KEY, newsItemId);
-        GalleryFragment fragment = new GalleryFragment();
+        GalleryFrag fragment = new GalleryFrag();
         fragment.setArguments(args);
         return fragment;
     }
@@ -106,13 +108,11 @@ public class GalleryFragment extends BaseFragment {
 
     private View.OnClickListener onClickListener = v -> {
         int pos = (int) v.getTag();
-        long contentId;
         if (contentType == ContentType.PHOTO) {
-            contentId = photos.get(pos).getId();
+            galleryManager.onPhotoItemSelected(newsItemId, photos.get(pos).getId());
         } else if (contentType == ContentType.VIDEO) {
-            contentId = videos.get(pos).getId();
+            openVideo(videos.get(pos).getYoutubeId());
         } else throw new IllegalStateException("Unhandled content type");
-        galleryManager.onPhotoItemSelected(newsItemId, contentId);
     };
 
     private void initViews(View view) {
@@ -132,7 +132,7 @@ public class GalleryFragment extends BaseFragment {
 
     private void updateUIForPhotos() {
         if (getContext() != null) {
-            if(photosAdapter==null) {
+            if (photosAdapter == null) {
                 photosAdapter = new PhotosAdapter(photos, onClickListener);
             }
             setUpRecyclerView(photosAdapter);
@@ -186,6 +186,9 @@ public class GalleryFragment extends BaseFragment {
         assert getContext() != null;
         return getContext().getResources().getConfiguration().orientation
                 == Configuration.ORIENTATION_PORTRAIT;
+    }
 
+    private void openVideo(String youtubeId) {
+        startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(YOUTUBE_BASE_URL + youtubeId)));
     }
 }
