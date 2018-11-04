@@ -11,12 +11,12 @@
     tools:context=".ui.activities.NewsListActivity">
 
     <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
-        android:id="@+id/news_srl_main_act"
+        android:id="@+id/news_srl_news_list_act"
         android:layout_width="0dp"
         android:layout_weight="2"
         android:layout_height="match_parent">
         <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/news_rv_main_act"
+            android:id="@+id/news_rv_news_list_act"
             android:name="com.hk.newsapp.NewsItemListFragment"
             android:layout_width="match_parent"
             android:layout_height="match_parent"

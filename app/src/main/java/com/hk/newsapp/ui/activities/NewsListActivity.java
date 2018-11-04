@@ -114,8 +114,8 @@ public class NewsListActivity extends BaseActivity {
 
     private void init() {
         networkStateTV = findViewById(R.id.network_state_tv);
-        newsSRL = findViewById(R.id.news_srl_main_act);
-        newsRV = findViewById(R.id.news_rv_main_act);
+        newsSRL = findViewById(R.id.news_srl_news_list_act);
+        newsRV = findViewById(R.id.news_rv_news_list_act);
         newsSRL.setOnRefreshListener(refreshListener);
     }
 

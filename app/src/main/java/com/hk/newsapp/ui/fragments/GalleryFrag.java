@@ -9,7 +9,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.hk.newsapp.IGalleryManager;
+import com.hk.newsapp.interfaces.IGalleryManager;
 import com.hk.newsapp.R;
 import com.hk.newsapp.enums.ContentType;
 import com.hk.newsapp.model.Photo;

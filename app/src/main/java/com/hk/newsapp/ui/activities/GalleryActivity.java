@@ -6,7 +6,7 @@ import android.os.Bundle;
 import android.view.MenuItem;
 import android.view.WindowManager;
 
-import com.hk.newsapp.IGalleryManager;
+import com.hk.newsapp.interfaces.IGalleryManager;
 import com.hk.newsapp.R;
 import com.hk.newsapp.enums.ContentType;
 import com.hk.newsapp.ui.fragments.GalleryFrag;
