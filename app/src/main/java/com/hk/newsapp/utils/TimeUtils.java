@@ -6,7 +6,7 @@ import java.util.Locale;
 
 public class TimeUtils {
 
-    public static final String DEFAULT_DATE_FORMAT = "MMMM dd, yyyy";
+    public static final String DEFAULT_DATE_FORMAT = "MMM dd, yyyy";
 
     public static String dateToString(Date date) {
         SimpleDateFormat simpleDate = new SimpleDateFormat(DEFAULT_DATE_FORMAT, Locale.getDefault());
