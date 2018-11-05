@@ -31,6 +31,9 @@
                 android:value="com.hk.newsapp.ui.activities.NewsListActivity" />
         </activity>
         <activity android:name=".ui.activities.GalleryActivity" />
+        <meta-data
+            android:name="io.fabric.ApiKey"
+            android:value="840934637b3fe3e557da6895e57690f047c5fbeb" />
     </application>
 
 </manifest>
