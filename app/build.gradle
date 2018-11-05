@@ -34,6 +34,7 @@ dependencies {
     def dagger_version = "2.16"
     def retrofit_version = "2.4.0"
     def retrofit_rx_adapter_version = "2.3.0"
+    def leak_canary_version = "1.6.2"
     def photo_view_version = "1.2.4"
     def junit_version = "4.12"
     def test_runner_version = "1.1.0"
@@ -78,6 +79,12 @@ dependencies {
 
     //Gson
     implementation "com.squareup.retrofit2:converter-gson:$retrofit_version"
+
+    //Leak Canary
+    debugImplementation "com.squareup.leakcanary:leakcanary-android:$leak_canary_version"
+    releaseImplementation "com.squareup.leakcanary:leakcanary-android-no-op:$leak_canary_version"
+    // Optional, if you use support library fragments:
+    debugImplementation "com.squareup.leakcanary:leakcanary-support-fragment:$leak_canary_version"
 
     //Photo View
     implementation "com.github.chrisbanes.photoview:library:$photo_view_version"
