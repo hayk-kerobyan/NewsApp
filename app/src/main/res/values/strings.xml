@@ -1,6 +1,8 @@
 <resources>
     <string name="app_name">NewsApp</string>
 
+    <string name="format">%1$td/%1$tm/%1$tY</string>
+
     <string name="turn_on_internet_message">Please turn on the internet connection</string>
     <string name="progress_dialog_default_message">Please wait…</string>
     <string name="connection_failure_message">Failed to connect</string>
@@ -10,5 +12,6 @@
     <string name="dummy_text">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</string>
     <string name="disconnected">Disconnected</string>
     <string name="connected">Connected</string>
+
 
 </resources>
