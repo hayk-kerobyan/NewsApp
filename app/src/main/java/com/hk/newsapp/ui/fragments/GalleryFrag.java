@@ -84,13 +84,6 @@ public class GalleryFrag extends BaseFragment {
         retrieveArgs();
         initViews(view);
         setUpViewModel();
-        subscribeObservers();
-    }
-
-    @Override
-    public void onDestroyView() {
-        super.onDestroyView();
-        unsubscribeObservers();
     }
 
     private Observer<List<Photo>> photosObserver = photos -> {
@@ -126,8 +119,19 @@ public class GalleryFrag extends BaseFragment {
     }
 
     private void setUpViewModel() {
-        galleryVM = ViewModelProviders.of(this, galleryFactory
+        assert getActivity() != null;
+        galleryVM = ViewModelProviders.of(getActivity(), galleryFactory
                 .withId(contentType, newsItemId)).get(GalleryVM.class);
+        switch (contentType) {
+            case PHOTO:
+                galleryVM.getPhotos().observe(getViewLifecycleOwner(), photosObserver);
+                break;
+            case VIDEO:
+                galleryVM.getVideos().observe(getViewLifecycleOwner(), videosObserver);
+                break;
+            default:
+                throw new IllegalStateException("Unhandled content type.");
+        }
     }
 
     private void updateUIForPhotos() {
@@ -154,32 +158,6 @@ public class GalleryFrag extends BaseFragment {
                 (spanCount, StaggeredGridLayoutManager.VERTICAL);
         contentRV.setLayoutManager(lm);
         contentRV.setAdapter(adapter);
-    }
-
-    private void subscribeObservers() {
-        switch (contentType) {
-            case PHOTO:
-                galleryVM.getPhotos().observe(this, photosObserver);
-                break;
-            case VIDEO:
-                galleryVM.getVideos().observe(this, videosObserver);
-                break;
-            default:
-                throw new IllegalStateException("Unhandled content type.");
-        }
-    }
-
-    private void unsubscribeObservers() {
-        switch (contentType) {
-            case PHOTO:
-                galleryVM.getPhotos().removeObserver(photosObserver);
-                break;
-            case VIDEO:
-                galleryVM.getVideos().removeObserver(videosObserver);
-                break;
-            default:
-                throw new IllegalStateException("Unhandled content type.");
-        }
     }
 
     private boolean isOrientationVertical() {

@@ -39,7 +39,6 @@ public class PhotoPreviewFrag extends BaseFragment {
 
     @Inject
     GalleryFactory galleryFactory;
-    private GalleryVM galleryVM;
 
     private ViewPager photosVP;
     private PhotoPreviewAdapter photosAdapter;
@@ -68,19 +67,12 @@ public class PhotoPreviewFrag extends BaseFragment {
         }
         initViews(view);
         setUpViewModel(newsItemId);
-        subscribeObservers();
     }
 
     @Override
     public void onSaveInstanceState(@NonNull Bundle outState) {
         super.onSaveInstanceState(outState);
         outState.putLong(CONTENT_ID_KEY, contentId);
-    }
-
-    @Override
-    public void onDestroyView() {
-        super.onDestroyView();
-        unsubscribeObservers();
     }
 
     private ViewPager.OnPageChangeListener pageChangeListener = new ViewPager.OnPageChangeListener() {
@@ -117,8 +109,10 @@ public class PhotoPreviewFrag extends BaseFragment {
     }
 
     private void setUpViewModel(long newsItemId) {
-        galleryVM = ViewModelProviders.of(this, galleryFactory
+        assert getActivity() != null;
+        GalleryVM galleryVM = ViewModelProviders.of(getActivity(), galleryFactory
                 .withId(PHOTO, newsItemId)).get(GalleryVM.class);
+        galleryVM.getPhotos().observe(getViewLifecycleOwner(), photosObserver);
     }
 
     private void updateUI() {
@@ -140,13 +134,5 @@ public class PhotoPreviewFrag extends BaseFragment {
             }
         }
         return 0;
-    }
-
-    private void subscribeObservers() {
-        galleryVM.getPhotos().observe(this, photosObserver);
-    }
-
-    private void unsubscribeObservers() {
-        galleryVM.getPhotos().removeObserver(photosObserver);
     }
 }
